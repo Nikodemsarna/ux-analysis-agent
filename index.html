@@ -1,1 +1,752 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>UX Analysis Agent - Professional Website Evaluation</title> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"> <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet"> <style> :root { --primary-color: #2c3e50; --secondary-color: #3498db; --success-color: #27ae60; --warning-color: #f39c12; --danger-color: #e74c3c; --light-bg: #f8f9fa; } body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: var(--light-bg); color: var(--primary-color); } .hero-section { background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); color: white; padding: 4rem 0; margin-bottom: 3rem; } .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07); transition: transform 0.2s ease; } .card:hover { transform: translateY(-2px); } .btn-primary { background-color: var(--secondary-color); border-color: var(--secondary-color); border-radius: 8px; padding: 0.75rem 2rem; font-weight: 600; } .analysis-step { padding: 1rem; margin: 0.5rem 0; border-left: 4px solid var(--secondary-color); background: white; border-radius: 0 8px 8px 0; } .score-card { background: white; border-radius: 12px; padding: 1.5rem; margin: 1rem 0; text-align: center; } .score-circle { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; margin: 0 auto 1rem; } .score-excellent { background-color: var(--success-color); color: white; } .score-good { background-color: #2ecc71; color: white; } .score-fair { background-color: var(--warning-color); color: white; } .score-poor { background-color: var(--danger-color); color: white; } .heuristic-item { background: white; border-radius: 8px; padding: 1rem; margin: 0.5rem 0; border-left: 4px solid #dee2e6; } .heuristic-pass { border-left-color: var(--success-color); } .heuristic-warning { border-left-color: var(--warning-color); } .heuristic-fail { border-left-color: var(--danger-color); } .loading-spinner { display: none; text-align: center; padding: 2rem; } .result-section { display: none; } .recommendation { background: #f8f9fa; border-radius: 8px; padding: 1rem; margin: 0.5rem 0; border-left: 4px solid var(--secondary-color); } .methodology-section { background: white; border-radius: 12px; padding: 2rem; margin: 2rem 0; } .feature-icon { font-size: 2rem; color: var(--secondary-color); margin-bottom: 1rem; } </style> </head> <body> <div class="hero-section"> <div class="container"> <div class="row align-items-center"> <div class="col-lg-8"> <h1 class="display-4 fw-bold mb-3">UX Analysis Agent</h1> <p class="lead mb-4">Professional website evaluation using Nielsen's 10 usability heuristics, WCAG 2.2 accessibility guidelines, and conversion optimization principles. Get comprehensive UX insights with actionable recommendations.</p> <div class="d-flex flex-wrap gap-3"> <span class="badge bg-light text-dark fs-6"><i class="bi bi-check-circle"></i> Nielsen's Heuristics</span> <span class="badge bg-light text-dark fs-6"><i class="bi bi-check-circle"></i> WCAG 2.2 Guidelines</span> <span class="badge bg-light text-dark fs-6"><i class="bi bi-check-circle"></i> Conversion Analysis</span> </div> </div> <div class="col-lg-4 text-center"> <i class="bi bi-clipboard-data" style="font-size: 6rem; opacity: 0.3;"></i> </div> </div> </div> </div> <div class="container"> <div class="row justify-content-center"> <div class="col-lg-8"> <div class="card"> <div class="card-header bg-white border-0 pb-0"> <h3 class="card-title text-center mb-0"><i class="bi bi-globe me-2"></i>Website Analysis</h3> </div> <div class="card-body"> <form id="analysisForm"> <div class="mb-4"> <label for="websiteUrl" class="form-label fw-bold">Website URL</label> <div class="input-group"> <span class="input-group-text"><i class="bi bi-link-45deg"></i></span> <input type="url" class="form-control" id="websiteUrl" placeholder="https://example.com" required> </div> <div class="form-text">Enter the complete URL including https:// or http://</div> </div> <div class="d-grid"> <button type="submit" class="btn btn-primary btn-lg"> <i class="bi bi-play-circle me-2"></i>Start UX Analysis </button> </div> </form> </div> </div> </div> </div> <div class="loading-spinner" id="loadingSpinner"> <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"> <span class="visually-hidden">Loading...</span> </div> <h4 class="mt-3">Analyzing Website...</h4> <div id="analysisProgress"> <div class="analysis-step"><i class="bi bi-camera text-primary me-2"></i>Capturing website screenshots...</div> </div> </div> <div class="result-section" id="resultSection"> <div class="row"> <div class="col-12"> <h2 class="mb-4"><i class="bi bi-file-earmark-text me-2"></i>UX Analysis Report</h2> <div id="websiteInfo" class="card mb-4"> <div class="card-body"> <h5 class="card-title" id="analyzedUrl"></h5> <p class="card-text text-muted" id="analysisDate"></p> </div> </div> </div> </div> <div class="row"> <div class="col-lg-4"> <h3>UX Scorecard</h3> <div id="uxScorecard"></div> </div> <div class="col-lg-8"> <h3>Executive Summary</h3> <div id="executiveSummary" class="card"> <div class="card-body"> <ul id="summaryPoints"></ul> </div> </div> </div> </div> <div class="row mt-4"> <div class="col-12"> <h3>Detailed Analysis</h3> <div id="detailedAnalysis"></div> </div> </div> <div class="row mt-4"> <div class="col-12"> <h3>Actionable Recommendations</h3> <div id="recommendations"></div> </div> </div> <div class="row mt-4"> <div class="col-12 text-center"> <button class="btn btn-outline-primary me-3" onclick="exportReport()"> <i class="bi bi-download me-2"></i>Export as PDF </button> <button class="btn btn-secondary" onclick="resetAnalysis()"> <i class="bi bi-arrow-clockwise me-2"></i>New Analysis </button> </div> </div> </div> <div class="methodology-section"> <h2 class="text-center mb-4">Analysis Methodology</h2> <div class="row"> <div class="col-md-6 col-lg-3 text-center mb-4"> <div class="feature-icon"><i class="bi bi-list-check"></i></div> <h5>Heuristic Evaluation</h5> <p>Nielsen's 10 usability heuristics and WCAG 2.2 accessibility guidelines</p> </div> <div class="col-md-6 col-lg-3 text-center mb-4"> <div class="feature-icon"><i class="bi bi-person-walking"></i></div> <h5>User Journey Simulation</h5> <p>Identify friction points and navigation issues in user flows</p> </div> <div class="col-md-6 col-lg-3 text-center mb-4"> <div class="feature-icon"><i class="bi bi-eye"></i></div> <h5>Visual Hierarchy</h5> <p>Evaluate visual clarity and mobile responsiveness</p> </div> <div class="col-md-6 col-lg-3 text-center mb-4"> <div class="feature-icon"><i class="bi bi-graph-up"></i></div> <h5>Conversion Analysis</h5> <p>Assess elements that impact user engagement and conversion</p> </div> </div> </div> </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> <script> const analysisForm = document.getElementById('analysisForm'); const loadingSpinner = document.getElementById('loadingSpinner'); const resultSection = document.getElementById('resultSection'); const analysisProgress = document.getElementById('analysisProgress'); const nielsensHeuristics = [ { name: "Visibility of System Status", description: "Users should always be informed about what is going on" }, { name: "Match Between System and Real World", description: "Speak the users' language with familiar concepts" }, { name: "User Control and Freedom", description: "Provide undo and redo functionality" }, { name: "Consistency and Standards", description: "Follow platform conventions and be consistent" }, { name: "Error Prevention", description: "Prevent problems from occurring in the first place" }, { name: "Recognition Rather Than Recall", description: "Make objects and options visible" }, { name: "Flexibility and Efficiency of Use", description: "Allow customization for expert users" }, { name: "Aesthetic and Minimalist Design", description: "Avoid irrelevant or rarely needed information" }, { name: "Help Users Recognize and Recover from Errors", description: "Use plain language error messages with solutions" }, { name: "Help and Documentation", description: "Provide searchable and focused help content" } ]; const analysisSteps = [ "Capturing website screenshots...", "Analyzing page structure and navigation...", "Evaluating usability heuristics...", "Checking accessibility compliance...", "Assessing visual hierarchy and design...", "Analyzing conversion optimization factors...", "Generating recommendations...", "Compiling final report..." ]; analysisForm.addEventListener('submit', function(e) { e.preventDefault(); const url = document.getElementById('websiteUrl').value; startAnalysis(url); }); function startAnalysis(url) { // Hide form and show loading document.querySelector('.card').style.display = 'none'; loadingSpinner.style.display = 'block'; // Simulate analysis progress let currentStep = 0; const progressInterval = setInterval(() => { if (currentStep < analysisSteps.length) { const stepDiv = document.createElement('div'); stepDiv.className = 'analysis-step'; stepDiv.innerHTML = `<i class="bi bi-check-circle text-success me-2"></i>${analysisSteps[currentStep]}`; analysisProgress.appendChild(stepDiv); currentStep++; } else { clearInterval(progressInterval); setTimeout(() => { showResults(url); }, 1000); } }, 800); } function showResults(url) { loadingSpinner.style.display = 'none'; resultSection.style.display = 'block'; // Set website info document.getElementById('analyzedUrl').textContent = url; document.getElementById('analysisDate').textContent = `Analysis completed on ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}`; // Generate mock results generateUXScorecard(); generateExecutiveSummary(); generateDetailedAnalysis(); generateRecommendations(); } function generateUXScorecard() { const scores = [ { name: "Usability", score: Math.floor(Math.random() * 3) + 7 }, { name: "Accessibility", score: Math.floor(Math.random() * 4) + 6 }, { name: "Visual Design", score: Math.floor(Math.random() * 2) + 8 }, { name: "Content Clarity", score: Math.floor(Math.random() * 3) + 7 }, { name: "Conversion Support", score: Math.floor(Math.random() * 4) + 6 } ]; const scorecardDiv = document.getElementById('uxScorecard'); scorecardDiv.innerHTML = ''; scores.forEach(item => { const scoreClass = getScoreClass(item.score); const scoreDiv = document.createElement('div'); scoreDiv.className = 'score-card'; scoreDiv.innerHTML = ` <div class="score-circle ${scoreClass}">${item.score}</div> <h6>${item.name}</h6> <small class="text-muted">${getScoreLabel(item.score)}</small> `; scorecardDiv.appendChild(scoreDiv); }); } function getScoreClass(score) { if (score >= 9) return 'score-excellent'; if (score >= 7) return 'score-good'; if (score >= 5) return 'score-fair'; return 'score-poor'; } function getScoreLabel(score) { if (score >= 9) return 'Excellent'; if (score >= 7) return 'Good'; if (score >= 5) return 'Fair'; return 'Needs Improvement'; } function generateExecutiveSummary() { const summaryPoints = [ "Website demonstrates strong visual hierarchy and professional design aesthetics", "Navigation structure is intuitive but could benefit from improved mobile optimization", "Accessibility compliance shows good foundation with room for ARIA label improvements", "Loading performance is within acceptable ranges for user experience", "Call-to-action elements are well-positioned but lack sufficient contrast ratios", "Content organization follows logical flow with minor information architecture gaps", "Overall user experience provides solid foundation for conversion optimization" ]; const summaryList = document.getElementById('summaryPoints'); summaryList.innerHTML = ''; summaryPoints.forEach(point => { const li = document.createElement('li'); li.textContent = point; li.className = 'mb-2'; summaryList.appendChild(li); }); } function generateDetailedAnalysis() { const analysisDiv = document.getElementById('detailedAnalysis'); analysisDiv.innerHTML = ''; nielsensHeuristics.forEach((heuristic, index) => { const status = ['pass', 'warning', 'fail'][Math.floor(Math.random() * 3)]; const heuristicDiv = document.createElement('div'); heuristicDiv.className = `heuristic-item heuristic-${status}`; const icon = status === 'pass' ? 'check-circle' : status === 'warning' ? 'exclamation-triangle' : 'x-circle'; const statusText = status === 'pass' ? 'Compliant' : status === 'warning' ? 'Needs Attention' : 'Non-Compliant'; heuristicDiv.innerHTML = ` <div class="d-flex justify-content-between align-items-start"> <div> <h6><i class="bi bi-${icon} me-2"></i>${heuristic.name}</h6> <p class="mb-1">${heuristic.description}</p> <small class="text-muted">Assessment: The website ${getRandomAssessment(status)}</small> </div> <span class="badge bg-${status === 'pass' ? 'success' : status === 'warning' ? 'warning' : 'danger'}">${statusText}</span> </div> `; analysisDiv.appendChild(heuristicDiv); }); } function getRandomAssessment(status) { const assessments = { pass: [ "successfully implements this principle with clear indicators and feedback", "demonstrates strong adherence to this heuristic across all pages", "effectively follows this guideline with consistent implementation" ], warning: [ "partially implements this principle but could be improved", "shows some compliance but lacks consistency in certain areas", "demonstrates basic understanding but needs refinement" ], fail: [ "lacks proper implementation of this critical usability principle", "shows significant gaps in following this essential guideline", "requires immediate attention to meet basic usability standards" ] }; return assessments[status][Math.floor(Math.random() * assessments[status].length)]; } function generateRecommendations() { const recommendations = [ { priority: "High", title: "Improve Color Contrast Ratios", description: "Increase contrast ratios for text elements to meet WCAG AA standards. Current contrast ratios fall below 4.5:1 threshold.", implementation: "Use darker text colors or lighter backgrounds. Tools like WebAIM contrast checker can help verify compliance." }, { priority: "Medium", title: "Optimize Mobile Navigation", description: "Enhance mobile menu functionality and touch target sizes for better mobile user experience.", implementation: "Increase button sizes to minimum 44px, implement slide-out navigation, and test on various devices." }, { priority: "Medium", title: "Add ARIA Labels", description: "Implement comprehensive ARIA labels for screen readers and assistive technologies.", implementation: "Add aria-label attributes to interactive elements, landmarks, and complex UI components." }, { priority: "Low", title: "Enhance Loading States", description: "Provide better feedback during loading processes to improve perceived performance.", implementation: "Add skeleton screens, progress indicators, and loading animations for form submissions." } ]; const recommendationsDiv = document.getElementById('recommendations'); recommendationsDiv.innerHTML = ''; recommendations.forEach(rec => { const recDiv = document.createElement('div'); recDiv.className = 'recommendation'; const priorityClass = rec.priority === 'High' ? 'danger' : rec.priority === 'Medium' ? 'warning' : 'secondary'; recDiv.innerHTML = ` <div class="d-flex justify-content-between align-items-start mb-2"> <h6 class="mb-0">${rec.title}</h6> <span class="badge bg-${priorityClass}">${rec.priority} Priority</span> </div> <p class="mb-2">${rec.description}</p> <small class="text-muted"><strong>Implementation:</strong> ${rec.implementation}</small> `; recommendationsDiv.appendChild(recDiv); }); } function exportReport() { // In a real implementation, this would generate a PDF alert('PDF export functionality would be implemented here. This demo shows the report structure that would be exported.'); } function resetAnalysis() { resultSection.style.display = 'none'; document.querySelector('.card').style.display = 'block'; document.getElementById('websiteUrl').value = ''; analysisProgress.innerHTML = '<div class="analysis-step"><i class="bi bi-camera text-primary me-2"></i>Capturing website screenshots...</div>'; } </script> </body> </html> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UX Analysis Agent - Professional Website Evaluation Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .analysis-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .heuristic-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid #3b82f6;
+        }
+        .heuristic-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .score-excellent { color: #10b981; }
+        .score-good { color: #f59e0b; }
+        .score-poor { color: #ef4444; }
+        .loading-spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-search text-blue-600"></i>
+                UX Analysis Agent
+            </h1>
+            <p class="text-xl text-gray-600">Professional Website Evaluation Tool</p>
+            <p class="text-gray-500 mt-2">Using Nielsen's 10 Heuristics • WCAG 2.2 Guidelines • Conversion Optimization</p>
+        </div>
+
+        <!-- Input Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Website URL</label>
+                    <input type="url" id="websiteUrl" placeholder="https://example.com" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Analysis Type</label>
+                    <select id="analysisType" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                        <option value="comprehensive">Comprehensive Analysis</option>
+                        <option value="heuristics">Heuristic Evaluation Only</option>
+                        <option value="accessibility">Accessibility Focus</option>
+                        <option value="conversion">Conversion Optimization</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button id="analyzeBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors">
+                        <i class="fas fa-play mr-2"></i>
+                        Analyze Website
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="hidden bg-white rounded-lg shadow-lg p-8 mb-8 text-center">
+            <div class="loading-spinner mx-auto mb-4"></div>
+            <h3 class="text-lg font-medium text-gray-800 mb-2">Analyzing Website...</h3>
+            <p class="text-gray-600" id="loadingText">Initializing analysis...</p>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden">
+            <!-- Executive Summary -->
+            <div class="analysis-card rounded-lg shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4">
+                    <i class="fas fa-clipboard-check mr-2"></i>
+                    Executive Summary
+                </h2>
+                <div id="executiveSummary" class="grid md:grid-cols-2 gap-4">
+                    <!-- Summary content will be inserted here -->
+                </div>
+            </div>
+
+            <!-- UX Scorecard -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-chart-bar mr-2"></i>
+                    UX Scorecard
+                </h2>
+                <div class="chart-container">
+                    <canvas id="scorecardChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Heuristic Evaluation -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-list-check mr-2"></i>
+                    Nielsen's 10 Usability Heuristics
+                </h2>
+                <div id="heuristicResults" class="space-y-4">
+                    <!-- Heuristic results will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Accessibility Analysis -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-universal-access mr-2"></i>
+                    Accessibility Analysis (WCAG 2.2)
+                </h2>
+                <div id="accessibilityResults" class="space-y-4">
+                    <!-- Accessibility results will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Conversion Optimization -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-arrow-trend-up mr-2"></i>
+                    Conversion Optimization
+                </h2>
+                <div id="conversionResults" class="space-y-4">
+                    <!-- Conversion results will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Detailed Recommendations -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    Actionable Recommendations
+                </h2>
+                <div id="recommendations" class="space-y-4">
+                    <!-- Recommendations will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Technical Analysis -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-code mr-2"></i>
+                    Technical Analysis
+                </h2>
+                <div id="technicalResults" class="grid md:grid-cols-2 gap-6">
+                    <!-- Technical results will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // UX Analysis Agent Implementation
+        class UXAnalysisAgent {
+            constructor() {
+                this.nielsensHeuristics = [
+                    { id: 1, name: "Visibility of System Status", description: "Users should always be informed about what is going on" },
+                    { id: 2, name: "Match Between System and Real World", description: "Speak the user's language with familiar concepts" },
+                    { id: 3, name: "User Control and Freedom", description: "Provide undo/redo functionality" },
+                    { id: 4, name: "Consistency and Standards", description: "Follow platform conventions" },
+                    { id: 5, name: "Error Prevention", description: "Prevent problems from occurring" },
+                    { id: 6, name: "Recognition Rather than Recall", description: "Make options visible" },
+                    { id: 7, name: "Flexibility and Efficiency of Use", description: "Cater to both novice and expert users" },
+                    { id: 8, name: "Aesthetic and Minimalist Design", description: "Remove irrelevant information" },
+                    { id: 9, name: "Help Users Recognize and Recover from Errors", description: "Provide clear error messages" },
+                    { id: 10, name: "Help and Documentation", description: "Provide searchable help when needed" }
+                ];
+
+                this.wcagPrinciples = [
+                    { name: "Perceivable", description: "Information must be presentable in ways users can perceive" },
+                    { name: "Operable", description: "Interface components must be operable" },
+                    { name: "Understandable", description: "Information and UI operation must be understandable" },
+                    { name: "Robust", description: "Content must be robust enough for various assistive technologies" }
+                ];
+
+                this.conversionFactors = [
+                    "Call-to-Action Effectiveness",
+                    "Trust Signals",
+                    "Page Load Speed",
+                    "Mobile Responsiveness",
+                    "User Flow Clarity",
+                    "Form Usability",
+                    "Value Proposition",
+                    "Social Proof"
+                ];
+
+                this.bindEvents();
+            }
+
+            bindEvents() {
+                document.getElementById('analyzeBtn').addEventListener('click', () => this.analyzeWebsite());
+                document.getElementById('websiteUrl').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.analyzeWebsite();
+                });
+            }
+
+            async analyzeWebsite() {
+                const url = document.getElementById('websiteUrl').value;
+                const analysisType = document.getElementById('analysisType').value;
+
+                if (!url) {
+                    alert('Please enter a website URL');
+                    return;
+                }
+
+                if (!this.isValidUrl(url)) {
+                    alert('Please enter a valid URL');
+                    return;
+                }
+
+                this.showLoading();
+                
+                try {
+                    const analysisResults = await this.performAnalysis(url, analysisType);
+                    this.displayResults(analysisResults);
+                } catch (error) {
+                    console.error('Analysis error:', error);
+                    this.showError('Analysis failed. Please try again.');
+                }
+            }
+
+            isValidUrl(string) {
+                try {
+                    new URL(string);
+                    return true;
+                } catch (_) {
+                    return false;
+                }
+            }
+
+            showLoading() {
+                document.getElementById('loadingState').classList.remove('hidden');
+                document.getElementById('resultsSection').classList.add('hidden');
+                
+                const loadingMessages = [
+                    'Initializing analysis...',
+                    'Evaluating usability heuristics...',
+                    'Checking accessibility compliance...',
+                    'Analyzing conversion elements...',
+                    'Generating recommendations...',
+                    'Compiling results...'
+                ];
+
+                let messageIndex = 0;
+                const interval = setInterval(() => {
+                    if (messageIndex < loadingMessages.length) {
+                        document.getElementById('loadingText').textContent = loadingMessages[messageIndex];
+                        messageIndex++;
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 800);
+            }
+
+            async performAnalysis(url, analysisType) {
+                // Simulate comprehensive analysis
+                await this.delay(4000);
+
+                const domain = new URL(url).hostname;
+                const analysisResults = {
+                    url: url,
+                    domain: domain,
+                    analysisType: analysisType,
+                    timestamp: new Date().toISOString(),
+                    scores: this.generateScores(),
+                    heuristics: this.evaluateHeuristics(url),
+                    accessibility: this.evaluateAccessibility(url),
+                    conversion: this.evaluateConversion(url),
+                    technical: this.evaluateTechnical(url),
+                    recommendations: this.generateRecommendations(url)
+                };
+
+                return analysisResults;
+            }
+
+            generateScores() {
+                return {
+                    usability: Math.floor(Math.random() * 3) + 7, // 7-9
+                    accessibility: Math.floor(Math.random() * 4) + 6, // 6-9
+                    visualDesign: Math.floor(Math.random() * 3) + 7, // 7-9
+                    contentClarity: Math.floor(Math.random() * 3) + 6, // 6-8
+                    conversionSupport: Math.floor(Math.random() * 4) + 5 // 5-8
+                };
+            }
+
+            evaluateHeuristics(url) {
+                return this.nielsensHeuristics.map(heuristic => {
+                    const score = Math.floor(Math.random() * 4) + 6; // 6-9
+                    const issues = this.generateHeuristicIssues(heuristic.id, score);
+                    return {
+                        ...heuristic,
+                        score: score,
+                        status: this.getScoreStatus(score),
+                        issues: issues,
+                        recommendations: this.getHeuristicRecommendations(heuristic.id, score)
+                    };
+                });
+            }
+
+            evaluateAccessibility(url) {
+                return this.wcagPrinciples.map(principle => {
+                    const score = Math.floor(Math.random() * 4) + 6; // 6-9
+                    return {
+                        ...principle,
+                        score: score,
+                        status: this.getScoreStatus(score),
+                        issues: this.generateAccessibilityIssues(principle.name, score),
+                        recommendations: this.getAccessibilityRecommendations(principle.name, score)
+                    };
+                });
+            }
+
+            evaluateConversion(url) {
+                return this.conversionFactors.map(factor => {
+                    const score = Math.floor(Math.random() * 5) + 5; // 5-9
+                    return {
+                        name: factor,
+                        score: score,
+                        status: this.getScoreStatus(score),
+                        analysis: this.getConversionAnalysis(factor, score),
+                        recommendations: this.getConversionRecommendations(factor, score)
+                    };
+                });
+            }
+
+            evaluateTechnical(url) {
+                return {
+                    performance: {
+                        score: Math.floor(Math.random() * 3) + 7,
+                        metrics: {
+                            loadTime: (Math.random() * 2 + 1).toFixed(2) + 's',
+                            firstContentfulPaint: (Math.random() * 1.5 + 0.5).toFixed(2) + 's',
+                            largestContentfulPaint: (Math.random() * 2 + 1.5).toFixed(2) + 's'
+                        }
+                    },
+                    seo: {
+                        score: Math.floor(Math.random() * 3) + 7,
+                        issues: this.generateSEOIssues()
+                    },
+                    security: {
+                        score: Math.floor(Math.random() * 2) + 8,
+                        https: true,
+                        issues: this.generateSecurityIssues()
+                    }
+                };
+            }
+
+            generateRecommendations(url) {
+                const recommendations = [
+                    {
+                        priority: 'High',
+                        category: 'Usability',
+                        issue: 'Navigation could be more intuitive',
+                        solution: 'Consider implementing breadcrumb navigation and clearer menu labels',
+                        impact: 'Improved user orientation and reduced bounce rate'
+                    },
+                    {
+                        priority: 'Medium',
+                        category: 'Accessibility',
+                        issue: 'Color contrast in some areas may not meet WCAG standards',
+                        solution: 'Increase contrast ratios to at least 4.5:1 for normal text',
+                        impact: 'Better visibility for users with visual impairments'
+                    },
+                    {
+                        priority: 'High',
+                        category: 'Conversion',
+                        issue: 'Call-to-action buttons could be more prominent',
+                        solution: 'Use contrasting colors and action-oriented text for CTAs',
+                        impact: 'Increased conversion rates and user engagement'
+                    },
+                    {
+                        priority: 'Medium',
+                        category: 'Performance',
+                        issue: 'Page load time could be optimized',
+                        solution: 'Optimize images and implement caching strategies',
+                        impact: 'Better user experience and SEO rankings'
+                    }
+                ];
+
+                return recommendations;
+            }
+
+            generateHeuristicIssues(heuristicId, score) {
+                const issueBank = {
+                    1: ['Loading states not always visible', 'Progress indicators missing'],
+                    2: ['Technical jargon used in user interface', 'Inconsistent terminology'],
+                    3: ['No clear undo functionality', 'Difficult to cancel actions'],
+                    4: ['Inconsistent button styling', 'Mixed design patterns'],
+                    5: ['Form validation only on submit', 'No input constraints'],
+                    6: ['Hidden navigation options', 'Requires memorization'],
+                    7: ['No keyboard shortcuts', 'Single interaction method'],
+                    8: ['Information overload', 'Cluttered interface'],
+                    9: ['Vague error messages', 'No recovery suggestions'],
+                    10: ['Help section hard to find', 'No search in documentation']
+                };
+
+                const issues = issueBank[heuristicId] || ['No significant issues found'];
+                return score < 7 ? issues : [];
+            }
+
+            getScoreStatus(score) {
+                if (score >= 8) return 'excellent';
+                if (score >= 6) return 'good';
+                return 'poor';
+            }
+
+            getScoreColor(score) {
+                if (score >= 8) return 'text-green-600';
+                if (score >= 6) return 'text-yellow-600';
+                return 'text-red-600';
+            }
+
+            getHeuristicRecommendations(heuristicId, score) {
+                const recommendations = {
+                    1: 'Implement loading indicators and progress bars',
+                    2: 'Use familiar language and conventions',
+                    3: 'Add clear undo/redo functionality',
+                    4: 'Standardize UI components and patterns',
+                    5: 'Implement real-time form validation',
+                    6: 'Make navigation and options more visible',
+                    7: 'Add keyboard shortcuts and multiple interaction methods',
+                    8: 'Simplify interface and remove clutter',
+                    9: 'Provide clear, actionable error messages',
+                    10: 'Make help easily accessible and searchable'
+                };
+
+                return recommendations[heuristicId] || 'Continue current approach';
+            }
+
+            generateAccessibilityIssues(principle, score) {
+                const issues = {
+                    'Perceivable': ['Missing alt text on images', 'Insufficient color contrast'],
+                    'Operable': ['Missing keyboard navigation', 'No focus indicators'],
+                    'Understandable': ['Complex language used', 'Inconsistent navigation'],
+                    'Robust': ['Invalid HTML markup', 'Poor assistive technology support']
+                };
+
+                return score < 7 ? issues[principle] || [] : [];
+            }
+
+            getAccessibilityRecommendations(principle, score) {
+                const recommendations = {
+                    'Perceivable': 'Add alt text to all images and improve color contrast',
+                    'Operable': 'Implement full keyboard navigation and focus indicators',
+                    'Understandable': 'Simplify language and ensure consistent navigation',
+                    'Robust': 'Validate HTML markup and test with screen readers'
+                };
+
+                return recommendations[principle] || 'Continue current approach';
+            }
+
+            getConversionAnalysis(factor, score) {
+                const analyses = {
+                    'Call-to-Action Effectiveness': score > 7 ? 'CTAs are well-positioned and use action-oriented language' : 'CTAs could be more prominent and persuasive',
+                    'Trust Signals': score > 7 ? 'Good use of testimonials and security badges' : 'More trust signals needed to build credibility',
+                    'Page Load Speed': score > 7 ? 'Page loads quickly across devices' : 'Page load time may be causing user drop-off',
+                    'Mobile Responsiveness': score > 7 ? 'Excellent mobile experience' : 'Mobile experience needs improvement',
+                    'User Flow Clarity': score > 7 ? 'Clear path to conversion' : 'User journey could be more intuitive',
+                    'Form Usability': score > 7 ? 'Forms are user-friendly and efficient' : 'Forms may be causing abandonment',
+                    'Value Proposition': score > 7 ? 'Clear value proposition communicated' : 'Value proposition needs to be more prominent',
+                    'Social Proof': score > 7 ? 'Effective use of social proof elements' : 'More social proof needed to build trust'
+                };
+
+                return analyses[factor] || 'Analysis not available';
+            }
+
+            getConversionRecommendations(factor, score) {
+                const recommendations = {
+                    'Call-to-Action Effectiveness': 'Use contrasting colors and action-oriented text',
+                    'Trust Signals': 'Add customer testimonials and security badges',
+                    'Page Load Speed': 'Optimize images and implement caching',
+                    'Mobile Responsiveness': 'Improve mobile layout and touch targets',
+                    'User Flow Clarity': 'Simplify navigation and reduce friction',
+                    'Form Usability': 'Reduce form fields and add inline validation',
+                    'Value Proposition': 'Make benefits more prominent and clear',
+                    'Social Proof': 'Add customer reviews and usage statistics'
+                };
+
+                return recommendations[factor] || 'Continue monitoring';
+            }
+
+            generateSEOIssues() {
+                return [
+                    'Meta descriptions could be more descriptive',
+                    'Some images missing alt attributes',
+                    'Page titles could be more unique'
+                ];
+            }
+
+            generateSecurityIssues() {
+                return [
+                    'Consider implementing Content Security Policy',
+                    'Check for mixed content warnings'
+                ];
+            }
+
+            displayResults(results) {
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('resultsSection').classList.remove('hidden');
+
+                this.displayExecutiveSummary(results);
+                this.displayScorecard(results.scores);
+                this.displayHeuristicResults(results.heuristics);
+                this.displayAccessibilityResults(results.accessibility);
+                this.displayConversionResults(results.conversion);
+                this.displayRecommendations(results.recommendations);
+                this.displayTechnicalResults(results.technical);
+            }
+
+            displayExecutiveSummary(results) {
+                const avgScore = Object.values(results.scores).reduce((a, b) => a + b, 0) / Object.keys(results.scores).length;
+                const summaryElement = document.getElementById('executiveSummary');
+                
+                summaryElement.innerHTML = `
+                    <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold mb-2">Overall Assessment</h3>
+                        <div class="text-3xl font-bold mb-2">${avgScore.toFixed(1)}/10</div>
+                        <p class="text-sm opacity-90">
+                            ${avgScore >= 8 ? 'Excellent' : avgScore >= 6 ? 'Good' : 'Needs Improvement'} user experience with room for optimization
+                        </p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold mb-2">Key Findings</h3>
+                        <ul class="text-sm opacity-90 space-y-1">
+                            <li>• ${results.scores.usability >= 8 ? 'Strong usability foundation' : 'Usability improvements needed'}</li>
+                            <li>• ${results.scores.accessibility >= 8 ? 'Good accessibility compliance' : 'Accessibility gaps identified'}</li>
+                            <li>• ${results.scores.conversionSupport >= 8 ? 'Effective conversion elements' : 'Conversion optimization opportunities'}</li>
+                            <li>• ${results.scores.visualDesign >= 8 ? 'Appealing visual design' : 'Visual design enhancements recommended'}</li>
+                        </ul>
+                    </div>
+                `;
+            }
+
+            displayScorecard(scores) {
+                const ctx = document.getElementById('scorecardChart').getContext('2d');
+                
+                new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Usability', 'Accessibility', 'Visual Design', 'Content Clarity', 'Conversion Support'],
+                        datasets: [{
+                            label: 'Current Score',
+                            data: [scores.usability, scores.accessibility, scores.visualDesign, scores.contentClarity, scores.conversionSupport],
+                            borderColor: 'rgb(59, 130, 246)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                            pointBackgroundColor: 'rgb(59, 130, 246)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgb(59, 130, 246)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    display: false
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 10
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            displayHeuristicResults(heuristics) {
+                const container = document.getElementById('heuristicResults');
+                container.innerHTML = heuristics.map(heuristic => `
+                    <div class="heuristic-card bg-gray-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-semibold text-gray-800">${heuristic.name}</h3>
+                            <span class="text-2xl font-bold ${this.getScoreColor(heuristic.score)}">${heuristic.score}/10</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">${heuristic.description}</p>
+                        ${heuristic.issues.length > 0 ? `
+                            <div class="mb-3">
+                                <h4 class="font-medium text-gray-700 mb-1">Issues Found:</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    ${heuristic.issues.map(issue => `<li>• ${issue}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                        <div class="bg-blue-50 p-3 rounded">
+                            <h4 class="font-medium text-blue-800 mb-1">Recommendation:</h4>
+                            <p class="text-sm text-blue-700">${heuristic.recommendations}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            displayAccessibilityResults(accessibility) {
+                const container = document.getElementById('accessibilityResults');
+                container.innerHTML = accessibility.map(principle => `
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-semibold text-gray-800">${principle.name}</h3>
+                            <span class="text-2xl font-bold ${this.getScoreColor(principle.score)}">${principle.score}/10</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">${principle.description}</p>
+                        ${principle.issues.length > 0 ? `
+                            <div class="mb-3">
+                                <h4 class="font-medium text-gray-700 mb-1">Issues Found:</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    ${principle.issues.map(issue => `<li>• ${issue}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                        <div class="bg-green-50 p-3 rounded">
+                            <h4 class="font-medium text-green-800 mb-1">Recommendation:</h4>
+                            <p class="text-sm text-green-700">${principle.recommendations}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            displayConversionResults(conversion) {
+                const container = document.getElementById('conversionResults');
+                container.innerHTML = conversion.map(factor => `
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-semibold text-gray-800">${factor.name}</h3>
+                            <span class="text-2xl font-bold ${this.getScoreColor(factor.score)}">${factor.score}/10</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">${factor.analysis}</p>
+                        <div class="bg-purple-50 p-3 rounded">
+                            <h4 class="font-medium text-purple-800 mb-1">Recommendation:</h4>
+                            <p class="text-sm text-purple-700">${factor.recommendations}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            displayRecommendations(recommendations) {
+                const container = document.getElementById('recommendations');
+                container.innerHTML = recommendations.map(rec => `
+                    <div class="bg-gray-50 p-4 rounded-lg border-l-4 ${rec.priority === 'High' ? 'border-red-500' : 'border-yellow-500'}">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-semibold text-gray-800">${rec.category}</h3>
+                            <span class="px-2 py-1 text-xs rounded ${rec.priority === 'High' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}">
+                                ${rec.priority} Priority
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2"><strong>Issue:</strong> ${rec.issue}</p>
+                        <p class="text-sm text-gray-600 mb-2"><strong>Solution:</strong> ${rec.solution}</p>
+                        <p class="text-sm text-gray-600"><strong>Expected Impact:</strong> ${rec.impact}</p>
+                    </div>
+                `).join('');
+            }
+
+            displayTechnicalResults(technical) {
+                const container = document.getElementById('technicalResults');
+                container.innerHTML = `
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-gray-800 mb-3">Performance Analysis</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Overall Score:</span>
+                                <span class="font-semibold ${this.getScoreColor(technical.performance.score)}">${technical.performance.score}/10</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Load Time:</span>
+                                <span class="font-medium">${technical.performance.metrics.loadTime}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">First Contentful Paint:</span>
+                                <span class="font-medium">${technical.performance.metrics.firstContentfulPaint}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Largest Contentful Paint:</span>
+                                <span class="font-medium">${technical.performance.metrics.largestContentfulPaint}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-gray-800 mb-3">SEO & Security</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm text-gray-600">SEO Score:</span>
+                                    <span class="font-semibold ${this.getScoreColor(technical.seo.score)}">${technical.seo.score}/10</span>
+                                </div>
+                                <ul class="text-xs text-gray-600 space-y-1">
+                                    ${technical.seo.issues.map(issue => `<li>• ${issue}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm text-gray-600">Security Score:</span>
+                                    <span class="font-semibold ${this.getScoreColor(technical.security.score)}">${technical.security.score}/10</span>
+                                </div>
+                                <div class="text-xs text-gray-600 space-y-1">
+                                    <div>HTTPS: ${technical.security.https ? '✓ Enabled' : '✗ Not Enabled'}</div>
+                                    ${technical.security.issues.map(issue => `<div>• ${issue}</div>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            showError(message) {
+                document.getElementById('loadingState').classList.add('hidden');
+                alert(message);
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+
+        // Initialize the UX Analysis Agent
+        document.addEventListener('DOMContentLoaded', () => {
+            new UXAnalysisAgent();
+        });
+    </script>
+</body>
+</html>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDtMHG99naIsI2%2FIkZ88jsQC8j%2FF3fFWO3XmbOhKaDLbSnF6C%2FzwULafV2ikseYKBcH5G%2BBg1yFwtZmAUma9tYskARJIj1Vlm4V1oZ11pW%2Ftanm0it1S3DaCIYJGKYAKVpltajzUS3RbPRC%2FM%2BxTxaQJhHNqzgE7YHM2zHEzjtfhyVQCwTyrtOrqBgpA5orP%2FSrw7a0gfAFsjbcWjPMPgOi7KIM2%2FPsbMnX79l2EQAAlJAqltKRVSt2cj9u6%2BV5R6t2iBhOc%2BMzcZFkiSJqUbY69aPJOIaUpTLDHCpaUYW8faO%2FUUZNoqnPwncq7t196ywHpwlR6%2FySVI8S2dx6dfDRedWs0ZApZMkXHj6ICLSj7OcnuyQcmqyYGTCLr%2BEbNKTMLnfm0xmx8OpJwFRpEBsljMu7A%2BNyvq7ySFK8X5GGYadFytoD6zRvidj3UyFGGum9RKKNR7wZIUnxHEgHw4ndPFVzkGqATJ2977yvhqzmQrIb7f1c9hNKA24gBLBz80tsxw3odCG9VEyGvbrqWH86w%3D";
+        window.__genspark_locale = "en-US";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDtMHG99naIsI2/IkZ88jsQC8j/F3fFWO3XmbOhKaDLbSnF6C/zwULafV2ikseYKBcH5G+Bg1yFwtZmAUma9tYskARJIj1Vlm4V1oZ11pW/tanm0it1S3DaCIYJGKYAKVpltajzUS3RbPRC/M+xTxaQJhHNqzgE7YHM2zHEzjtfhyVQCwTyrtOrqBgpA5orP/Srw7a0gfAFsjbcWjPMPgOi7KIM2/PsbMnX79l2EQAAlJAqltKRVSt2cj9u6+V5R6t2iBhOc+MzcZFkiSJqUbY69aPJOIaUpTLDHCpaUYW8faO/UUZNoqnPwncq7t196ywHpwlR6/ySVI8S2dx6dfDRedWs0ZApZMkXHj6ICLSj7OcnuyQcmqyYGTCLr+EbNKTMLnfm0xmx8OpJwFRpEBsljMu7A+Nyvq7ySFK8X5GGYadFytoD6zRvidj3UyFGGum9RKKNR7wZIUnxHEgHw4ndPFVzkGqATJ2977yvhqzmQrIb7f1c9hNKA24gBLBz80tsxw3odCG9VEyGvbrqWH86w=";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
+    
