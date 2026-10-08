@@ -1,12 +1,13 @@
 // Losowanie zadań i ocenianie odpowiedzi. Moduł nie dotyka DOM — działa też w Node (testy).
 import {
   EMPATHY_QUADRANTS, PERSONAS, JOURNEY_STAGES, JOURNEYS, JOURNEY_MAP_LAYERS,
-  JOURNEY_MAP_ITEMS, HEURISTICS, HEURISTIC_SCENARIOS, THEORY,
+  JOURNEY_MAP_ITEMS, HEURISTICS, HEURISTIC_SCENARIOS, THEORY, DCJ_THEORY, DCJ_CONCEPTS,
+  TOUCHPOINT_TYPES, TOUCHPOINT_ITEMS,
 } from './data.js';
 
 export const TOPICS = {
   empathy: 'Mapa empatii',
-  journey: 'User journey',
+  journey: 'Digital Customer Journey',
   heuristics: 'Heurystyki Nielsena',
 };
 
@@ -176,17 +177,19 @@ export function solution(task) {
 
 // ---------- generatory ----------
 
-function dndTask({ topic, title, instructions, context, zones, items, layout }) {
+const theoryRefs = (...ids) => ids.map((id) => DCJ_THEORY.find((t) => t.id === id));
+
+function dndTask({ topic, title, instructions, context, zones, items, layout, theory, theoryAfterCheck }) {
   return {
-    id: nextId('t'), topic, mode: 'dnd', type: 'dnd', title, instructions, context, layout,
+    id: nextId('t'), topic, mode: 'dnd', type: 'dnd', title, instructions, context, layout, theory, theoryAfterCheck,
     zones,
     items: shuffle(items.map((it) => ({ id: nextId('i'), ...it }))),
   };
 }
 
-function formTask({ topic, mode, title, instructions, context, fields }) {
+function formTask({ topic, mode, title, instructions, context, fields, theory, theoryAfterCheck }) {
   return {
-    id: nextId('t'), topic, mode, type: 'form', title, instructions, context,
+    id: nextId('t'), topic, mode, type: 'form', title, instructions, context, theory, theoryAfterCheck,
     fields: fields.map((f) => ({ id: nextId('f'), minWords: 6, ...f })),
   };
 }
@@ -269,10 +272,11 @@ const GENERATORS = [
       const items = JOURNEY_STAGES.map((s) => ({ text: sample(j.actions[s.id], 1)[0], target: s.id }));
       return dndTask({
         topic: 'journey',
-        title: 'Ułóż ścieżkę użytkownika w kolejności',
-        instructions: 'Ułóż działania użytkownika w kolejności, w jakiej występują na ścieżce klienta (od pierwszego kontaktu do lojalności).',
+        title: 'Ułóż Digital Customer Journey w kolejności',
+        instructions: 'Ułóż działania klienta w kolejności, w jakiej występują w Digital Customer Journey — od pierwszego kontaktu z marką do lojalności.',
         context: [{ kind: 'scenario', title: j.title, text: j.persona }],
         zones, items, layout: 'slots',
+        theory: theoryRefs('definition', '5a'),
       });
     },
   },
@@ -284,10 +288,11 @@ const GENERATORS = [
       const items = JOURNEY_STAGES.flatMap((s) => j.actions[s.id].map((text) => ({ text, target: s.id })));
       return dndTask({
         topic: 'journey',
-        title: 'Przypisz działania do etapów customer journey',
-        instructions: 'Przeciągnij każde działanie do etapu ścieżki klienta, w którym występuje.',
+        title: 'Przypisz działania do etapów Digital Customer Journey',
+        instructions: 'Przeciągnij każde działanie do etapu Digital Customer Journey, w którym występuje.',
         context: [{ kind: 'scenario', title: j.title, text: j.persona }],
         zones, items, layout: 'columns',
+        theory: theoryRefs('5a', 'mckinsey', 'zmot'),
       });
     },
   },
@@ -297,10 +302,11 @@ const GENERATORS = [
       const items = JOURNEY_MAP_LAYERS.flatMap((l) => sample(JOURNEY_MAP_ITEMS[l.id], 2).map((text) => ({ text, target: l.id })));
       return dndTask({
         topic: 'journey',
-        title: 'Warstwy mapy podróży',
-        instructions: 'Mapa podróży ma kilka warstw (wierszy). Przyporządkuj każdą notatkę do właściwej warstwy.',
-        context: [{ kind: 'scenario', title: 'Zakupy odzieży w sklepie internetowym', text: 'Notatki z warsztatu, na którym zespół tworzył mapę podróży klientki kupującej kurtkę online.' }],
+        title: 'Warstwy mapy customer journey',
+        instructions: 'Mapa customer journey ma kilka warstw (wierszy). Przyporządkuj każdą notatkę do właściwej warstwy.',
+        context: [{ kind: 'scenario', title: 'Zakupy odzieży w sklepie internetowym', text: 'Notatki z warsztatu, na którym zespół tworzył mapę Digital Customer Journey klientki kupującej kurtkę online.' }],
         zones: JOURNEY_MAP_LAYERS, items, layout: 'columns',
+        theory: theoryRefs('map'),
       });
     },
   },
@@ -312,7 +318,8 @@ const GENERATORS = [
       return formTask({
         topic: 'journey', mode: 'open',
         title: 'Znajdź pain point i zaproponuj szansę',
-        instructions: 'Przeczytaj opis mapy podróży. Wskaż etap z największym problemem i zaproponuj konkretne usprawnienie (szansę).',
+        instructions: 'Przeczytaj opis mapy customer journey. Wskaż etap z największym problemem i zaproponuj konkretne usprawnienie (szansę).',
+        theory: theoryRefs('map', 'peakend'),
         context: [
           { kind: 'scenario', title: j.title, text: j.persona },
           { kind: 'journey', steps: JOURNEY_STAGES.map((s) => ({ stage: s.label, text: j.pain.steps[s.id][0], emotion: j.pain.steps[s.id][1] })) },
@@ -321,6 +328,38 @@ const GENERATORS = [
           { kind: 'select', prompt: 'Na którym etapie występuje największy pain point?', options, correct: j.pain.stage, weight: 1 },
           { kind: 'textarea', prompt: 'Zaproponuj usprawnienie (szansę) dla tego etapu i krótko je uzasadnij:', keywords: j.pain.keywords, need: 2, model: j.pain.model, weight: 2 },
         ],
+      });
+    },
+  },
+  {
+    key: 'journey-touchpoints', topic: 'journey', mode: 'dnd',
+    make() {
+      const items = TOUCHPOINT_TYPES.flatMap((t) => sample(TOUCHPOINT_ITEMS[t.id], 2).map((text) => ({ text, target: t.id })));
+      return dndTask({
+        topic: 'journey',
+        title: 'Typy punktów styku w Digital Customer Journey',
+        instructions: 'Przyporządkuj każdy punkt styku do kategorii według Lemon i Verhoef (2016): kto go kontroluje?',
+        context: [{ kind: 'scenario', title: 'Zakup sprzętu elektronicznego online', text: 'Punkty styku zebrane podczas analizy ścieżki klientów sklepu internetowego z elektroniką.' }],
+        zones: TOUCHPOINT_TYPES, items, layout: 'columns',
+        theory: theoryRefs('touchpoints', 'digital'),
+        theoryAfterCheck: true,
+      });
+    },
+  },
+  {
+    key: 'journey-models', topic: 'journey', mode: 'dnd',
+    make() {
+      const concepts = sample(DCJ_CONCEPTS, 5);
+      return dndTask({
+        topic: 'journey',
+        title: 'Teoria customer journey — dopasuj pojęcia',
+        instructions: 'Przeciągnij każdą definicję na pojęcie lub model z teorii customer journey, który opisuje.',
+        context: [],
+        zones: concepts.map((c, i) => ({ id: `c${i}`, label: c.label, capacity: 1 })),
+        items: concepts.map((c, i) => ({ text: c.def, target: `c${i}` })),
+        layout: 'list',
+        theory: theoryRefs('definition', '5a', 'mckinsey', 'zmot'),
+        theoryAfterCheck: true,
       });
     },
   },
@@ -396,6 +435,8 @@ const GENERATORS = [
         instructions: 'Wpisz brakujące słowo lub wyrażenie w każdej luce.',
         context: [],
         fields: qs.map((q) => ({ kind: 'text', prompt: q.text, accept: q.accept ?? [], stems: q.stems ?? [], answer: q.answer })),
+        theory: topic === 'journey' ? theoryRefs('definition', 'zmot', 'mckinsey') : undefined,
+        theoryAfterCheck: true,
       });
     },
   })),
@@ -436,4 +477,4 @@ export function gradeLabel(percent) {
   return { mark: '2', text: 'niedostateczny' };
 }
 
-export { HEURISTICS, JOURNEY_STAGES, EMPATHY_QUADRANTS };
+export { HEURISTICS, JOURNEY_STAGES, EMPATHY_QUADRANTS, DCJ_THEORY };

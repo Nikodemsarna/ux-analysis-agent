@@ -56,3 +56,11 @@ test('ocena opisowa: częściowe punkty i minimalna długość', () => {
   const sel = grade(task, { [task.fields[0].id]: task.fields[0].correct, [field.id]: 'nie wiem co tu napisać, nic mi nie przychodzi do głowy' });
   assert.ok(sel.score > 0 && sel.score < 1);
 });
+
+test('zadania Digital Customer Journey mają odwołania do teorii ze źródłami', () => {
+  for (const key of GENERATOR_KEYS.filter((k) => k.startsWith('journey-'))) {
+    const task = makeTask(key);
+    assert.ok(task.theory?.length, key);
+    for (const t of task.theory) assert.ok(t && t.name && t.text && t.source, key);
+  }
+});

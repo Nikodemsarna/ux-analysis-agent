@@ -169,13 +169,53 @@ export const PERSONAS = [
   },
 ];
 
+// Pięcioetapowy model Digital Customer Journey używany w ćwiczeniach. `theory` wskazuje odpowiedniki
+// w modelach z literatury: 5A (Kotler i in., 2016), fazy Lemon i Verhoef (2016), pętla McKinsey (Court i in., 2009).
 export const JOURNEY_STAGES = [
-  { id: 'aware', label: 'Świadomość', hint: 'Użytkownik dowiaduje się o potrzebie lub ofercie' },
-  { id: 'consider', label: 'Rozważanie', hint: 'Szuka informacji, porównuje opcje' },
-  { id: 'decide', label: 'Decyzja / zakup', hint: 'Wybiera i finalizuje' },
-  { id: 'use', label: 'Korzystanie', hint: 'Używa produktu lub usługi' },
-  { id: 'loyal', label: 'Lojalność', hint: 'Ocenia, wraca, poleca' },
+  { id: 'aware', label: 'Świadomość', hint: 'Klient dowiaduje się o potrzebie lub ofercie', theory: '5A: Aware · przed zakupem (pre-purchase)' },
+  { id: 'consider', label: 'Rozważanie', hint: 'Szuka informacji online, porównuje opcje', theory: '5A: Appeal + Ask · ZMOT · aktywna ewaluacja (McKinsey)' },
+  { id: 'decide', label: 'Decyzja / zakup', hint: 'Wybiera i finalizuje transakcję', theory: '5A: Act · zakup (purchase) · moment zakupu (McKinsey)' },
+  { id: 'use', label: 'Korzystanie', hint: 'Używa produktu lub usługi', theory: 'po zakupie (post-purchase) · doświadczenie posprzedażowe' },
+  { id: 'loyal', label: 'Lojalność', hint: 'Ocenia, wraca, poleca', theory: '5A: Advocate · pętla lojalności (loyalty loop)' },
 ];
+
+// Teoria Digital Customer Journey — wyświetlana w ściądze i w ramkach „Podstawa teoretyczna” zadań.
+export const DCJ_THEORY = [
+  { id: 'definition', name: 'Customer journey jako proces', text: 'Customer journey to cały proces, przez który klient przechodzi w relacji z marką: od uświadomienia potrzeby, przez zakup, po doświadczenia posprzedażowe. Lemon i Verhoef dzielą go na trzy fazy: przed zakupem, zakup i po zakupie, a doświadczenie klienta (CX) jest sumą wrażeń ze wszystkich punktów styku.', source: 'Lemon, K. N., Verhoef, P. C. (2016). Understanding Customer Experience Throughout the Customer Journey. Journal of Marketing, 80(6).' },
+  { id: 'digital', name: 'Digital Customer Journey', text: 'Digital Customer Journey to ścieżka klienta, w której kluczowe punkty styku są cyfrowe: wyszukiwarka, media społecznościowe, strona, aplikacja, e-mail, czat, płatność online. Ścieżka rzadko jest liniowa — klient przeskakuje między kanałami i urządzeniami (omnichannel), np. szuka online i kupuje offline (ROPO).', source: 'Kotler, P., Kartajaya, H., Setiawan, I. (2016). Marketing 4.0: Moving from Traditional to Digital.' },
+  { id: '5a', name: 'Model 5A', text: 'W gospodarce cyfrowej Kotler zastępuje lejek AIDA ścieżką 5A: Aware (świadomość), Appeal (zainteresowanie), Ask (dopytywanie, szukanie opinii), Act (działanie, zakup), Advocate (rekomendowanie). Wpływ innych klientów (opinie, social media) jest w niej równie ważny jak komunikacja marki.', source: 'Kotler, P., Kartajaya, H., Setiawan, I. (2016). Marketing 4.0.' },
+  { id: 'mckinsey', name: 'Pętla lojalności (Consumer Decision Journey)', text: 'McKinsey opisał ścieżkę jako koło, a nie lejek: wstępne rozważanie, aktywna ewaluacja, moment zakupu i doświadczenie po zakupie. Zadowolony klient wchodzi w pętlę lojalności i przy kolejnym zakupie pomija etap porównywania.', source: 'Court, D., Elzinga, D., Mulder, S., Vetvik, O. J. (2009). The Consumer Decision Journey. McKinsey Quarterly.' },
+  { id: 'zmot', name: 'ZMOT — zerowy moment prawdy', text: 'Zero Moment of Truth to chwila, w której klient przed zakupem szuka informacji online: czyta recenzje, ogląda wideo, porównuje ceny. Poprzedza „pierwszy moment prawdy” (zetknięcie z produktem na półce lub stronie) i „drugi” (używanie produktu).', source: 'Lecinski, J. (2011). Winning the Zero Moment of Truth. Google.' },
+  { id: 'touchpoints', name: 'Typy punktów styku', text: 'Punkty styku dzielą się na: należące do marki (brand-owned, np. aplikacja, strona), należące do partnerów (partner-owned, np. kurier, operator płatności, marketplace), należące do klienta (customer-owned, decyzje i działania samego klienta) oraz zewnętrzne/społeczne (social/external, np. niezależne recenzje, opinie znajomych).', source: 'Lemon, K. N., Verhoef, P. C. (2016). Journal of Marketing, 80(6).' },
+  { id: 'map', name: 'Mapa customer journey (CJM)', text: 'Mapa customer journey wizualizuje ścieżkę jednej persony w konkretnym scenariuszu. Typowe warstwy to: etapy, działania, punkty styku, myśli i emocje (krzywa emocji), pain pointy oraz szanse (opportunities) na usprawnienia.', source: 'Kaplan, K. (2016). When and How to Create Customer Journey Maps. Nielsen Norman Group.' },
+  { id: 'peakend', name: 'Reguła szczytu i końca', text: 'Ludzie oceniają doświadczenie głównie na podstawie momentu najsilniejszych emocji (szczytu) i jego zakończenia, a nie średniej wszystkich chwil. Dlatego na krzywej emocji warto szczególnie zadbać o najgorszy punkt i o finał ścieżki.', source: 'Kahneman, D., Fredrickson, B. L., Schreiber, C. A., Redelmeier, D. A. (1993). Psychological Science, 4(6).' },
+  { id: 'blueprint', name: 'Service blueprint', text: 'Service blueprint rozszerza mapę ścieżki o to, czego klient nie widzi: działania pracowników (frontstage i backstage) oraz procesy i systemy wspierające. Pozwala znaleźć przyczyny pain pointów po stronie organizacji.', source: 'Shostack, G. L. (1984). Designing Services That Deliver. Harvard Business Review.' },
+];
+
+// Pojęcie → definicja, do zadania dopasowania modeli teoretycznych.
+export const DCJ_CONCEPTS = [
+  { label: 'ZMOT (Lecinski)', def: 'Moment, w którym klient przed zakupem szuka informacji online: recenzji, wideo, porównań cen.' },
+  { label: 'Pętla lojalności (McKinsey)', def: 'Zadowolony klient przy kolejnym zakupie pomija etap porównywania i od razu wraca do marki.' },
+  { label: 'Model 5A (Kotler)', def: 'Ścieżka: Aware, Appeal, Ask, Act, Advocate — zastępuje lejek AIDA w gospodarce cyfrowej.' },
+  { label: 'Reguła szczytu i końca (Kahneman)', def: 'Doświadczenie oceniamy głównie po najsilniejszym momencie i po zakończeniu, nie po średniej.' },
+  { label: 'Service blueprint (Shostack)', def: 'Mapa uzupełniona o niewidoczne dla klienta działania pracowników i procesy zaplecza.' },
+  { label: 'Trzy fazy CX (Lemon i Verhoef)', def: 'Podział ścieżki na fazę przed zakupem, zakup i fazę po zakupie.' },
+  { label: 'ROPO', def: 'Klient szuka informacji online, a kupuje w sklepie stacjonarnym.' },
+];
+
+export const TOUCHPOINT_TYPES = [
+  { id: 'brand', label: 'Należące do marki', hint: 'brand-owned — marka je projektuje i kontroluje' },
+  { id: 'partner', label: 'Należące do partnerów', hint: 'partner-owned — współtworzone z partnerami' },
+  { id: 'customer', label: 'Należące do klienta', hint: 'customer-owned — decyzje i działania samego klienta' },
+  { id: 'social', label: 'Zewnętrzne / społeczne', hint: 'social/external — poza kontrolą marki' },
+];
+
+export const TOUCHPOINT_ITEMS = {
+  brand: ['Aplikacja mobilna sklepu', 'Newsletter wysyłany przez markę', 'Karta produktu na stronie sklepu', 'Czat z konsultantem na stronie marki'],
+  partner: ['Dostawa realizowana przez firmę kurierską', 'Płatność przez zewnętrznego operatora płatności', 'Oferta marki na platformie marketplace', 'Program punktowy prowadzony z partnerem'],
+  customer: ['Klient sam wybiera, czy płaci kartą, czy BLIK-iem', 'Klient tworzy własną listę porównawczą w arkuszu', 'Klient sam konfiguruje ustawienia produktu w domu', 'Klient zapisuje zrzuty ekranu ofert do późniejszej decyzji'],
+  social: ['Recenzja niezależnego twórcy na YouTube', 'Opinie użytkowników na forum internetowym', 'Rekomendacja znajomego w komunikatorze', 'Ranking w niezależnej porównywarce cen'],
+};
 
 export const JOURNEYS = [
   {
@@ -239,18 +279,18 @@ export const JOURNEYS = [
     title: 'Wykupienie karnetu na siłownię',
     persona: 'Magda, 31 lat, chce wrócić do regularnych ćwiczeń.',
     actions: {
-      aware: ['Dostaje ulotkę o otwarciu nowej siłowni na osiedlu', 'Postanawia w Nowy Rok zadbać o kondycję'],
-      consider: ['Porównuje cenniki trzech klubów', 'Przychodzi na darmowe wejście próbne'],
-      decide: ['Podpisuje umowę na karnet roczny', 'Pobiera aplikację klubu i aktywuje kartę'],
+      aware: ['Widzi w mediach społecznościowych reklamę nowej siłowni na osiedlu', 'Aplikacja zdrowotna w telefonie pokazuje jej spadek aktywności'],
+      consider: ['Porównuje cenniki trzech klubów na ich stronach', 'Rezerwuje online darmowe wejście próbne'],
+      decide: ['Kupuje karnet roczny w aplikacji klubu', 'Dodaje cyfrową kartę członkowską do portfela w telefonie'],
       use: ['Zapisuje się w aplikacji na zajęcia jogi', 'Ćwiczy z trenerem personalnym'],
-      loyal: ['Przedłuża karnet na kolejny rok', 'Zaprasza koleżankę w ramach programu poleceń'],
+      loyal: ['Przedłuża karnet w aplikacji na kolejny rok', 'Wysyła koleżance link polecający z aplikacji'],
     },
     pain: {
       stage: 'consider',
       steps: {
-        aware: ['Ulotka z promocją na otwarcie przyciąga jej uwagę.', 'zaciekawienie'],
+        aware: ['Reklama z promocją na otwarcie w mediach społecznościowych przyciąga jej uwagę.', 'zaciekawienie'],
         consider: ['Na stronie klubu nie ma cennika — trzeba zadzwonić, a konsultant naciska na umowę roczną.', 'nieufność i zniecierpliwienie'],
-        decide: ['Podpisuje umowę na miejscu, aktywacja karty trwa chwilę.', 'ulga'],
+        decide: ['W końcu kupuje karnet w aplikacji, aktywacja cyfrowej karty trwa chwilę.', 'ulga'],
         use: ['Zajęcia są świetne, zapisy w aplikacji działają sprawnie.', 'radość'],
         loyal: ['Myśli o przedłużeniu karnetu.', 'zadowolenie'],
       },
@@ -321,7 +361,7 @@ export const JOURNEYS = [
 ];
 
 export const JOURNEY_MAP_LAYERS = [
-  { id: 'action', label: 'Działanie', hint: 'Co robi użytkownik' },
+  { id: 'action', label: 'Działanie', hint: 'Co robi klient' },
   { id: 'touchpoint', label: 'Punkt styku', hint: 'Gdzie styka się z marką' },
   { id: 'emotion', label: 'Emocja', hint: 'Co czuje' },
   { id: 'pain', label: 'Pain point', hint: 'Problem, przeszkoda' },
@@ -495,14 +535,20 @@ export const THEORY = {
     { text: 'Mapa empatii jest narzędziem pierwszego etapu Design Thinking, który nazywa się ___.', stems: ['empat', 'zrozum', 'empathi'], answer: 'Empatia (Empathize)' },
   ],
   journey: [
-    { text: 'Customer journey map przedstawia doświadczenie użytkownika w podziale na kolejne ___.', stems: ['etap', 'faz', 'krok'], answer: 'etapy' },
-    { text: 'Miejsce kontaktu użytkownika z marką (np. e-mail, infolinia, aplikacja) to punkt ___.', stems: ['styk', 'kontakt', 'touch'], answer: 'styku (touchpoint)' },
-    { text: 'Krzywa ___ na mapie podróży pokazuje, jak zmienia się nastrój użytkownika na kolejnych etapach.', stems: ['emocj', 'nastroj', 'uczuc'], answer: 'emocji' },
-    { text: 'Moment, w którym użytkownik doświadcza problemu lub frustracji, to tzw. pain ___.', accept: ['point', 'pointy', 'points', 'pointem'], answer: 'point' },
-    { text: 'Pierwszy etap typowej ścieżki klienta, w którym dowiaduje się on o produkcie, to ___.', stems: ['swiadom', 'awareness', 'odkryw', 'uswiadom'], answer: 'Świadomość (Awareness)' },
+    { text: 'Mapa customer journey przedstawia doświadczenie klienta w podziale na kolejne ___.', stems: ['etap', 'faz', 'krok'], answer: 'etapy' },
+    { text: 'Miejsce kontaktu klienta z marką (np. e-mail, czat, aplikacja) to punkt ___.', stems: ['styk', 'kontakt', 'touch'], answer: 'styku (touchpoint)' },
+    { text: 'Krzywa ___ na mapie customer journey pokazuje, jak zmienia się nastrój klienta na kolejnych etapach.', stems: ['emocj', 'nastroj', 'uczuc'], answer: 'emocji' },
+    { text: 'Moment, w którym klient doświadcza problemu lub frustracji, to tzw. pain ___.', accept: ['point', 'pointy', 'points', 'pointem'], answer: 'point' },
+    { text: 'Pierwszy etap Digital Customer Journey, w którym klient dowiaduje się o produkcie, to ___.', stems: ['swiadom', 'awareness', 'odkryw', 'uswiadom'], answer: 'Świadomość (Awareness)' },
     { text: 'Na podstawie zidentyfikowanych problemów zespół formułuje ___, czyli możliwości usprawnień.', stems: ['szans', 'okazj', 'opportun', 'mozliwos'], answer: 'szanse (opportunities)' },
-    { text: 'Mapa podróży opisuje doświadczenie konkretnej ___, dlatego jej tworzenie zaczyna się od jej wyboru.', stems: ['person'], answer: 'persony' },
-    { text: 'Rozszerzenie mapy podróży o procesy zaplecza i pracowników (frontstage/backstage) to service ___.', stems: ['blueprint'], answer: 'blueprint' },
+    { text: 'Mapa customer journey opisuje doświadczenie konkretnej ___, dlatego jej tworzenie zaczyna się od jej wyboru.', stems: ['person'], answer: 'persony' },
+    { text: 'Rozszerzenie mapy customer journey o działania pracowników i procesy zaplecza (Shostack, 1984) to service ___.', stems: ['blueprint'], answer: 'blueprint' },
+    { text: 'Lemon i Verhoef (2016) dzielą customer journey na trzy fazy: przed zakupem, zakup i ___ zakupie.', accept: ['po', 'post', 'post-purchase'], stems: ['posprzed', 'pozakup'], answer: 'po (post-purchase)' },
+    { text: 'Moment, w którym klient szuka opinii i porównań online przed zakupem, Google nazwał zerowym momentem ___ (ZMOT).', stems: ['prawd', 'truth'], answer: 'prawdy (Zero Moment of Truth)' },
+    { text: 'W modelu 5A Kotlera ostatni etap, w którym klient poleca markę innym, to ___.', stems: ['advoca', 'rekomend', 'polec', 'adwok', 'rzecznic'], answer: 'Advocate (rekomendowanie)' },
+    { text: 'W modelu McKinsey zadowolony klient przy kolejnym zakupie wchodzi w pętlę ___ i pomija etap porównywania.', stems: ['lojaln', 'loyal'], answer: 'lojalności (loyalty loop)' },
+    { text: 'Strategia, w której klient szuka informacji online, a kupuje offline, to ___ (research online, purchase offline).', accept: ['ropo'], answer: 'ROPO' },
+    { text: 'Według reguły szczytu i ___ (Kahneman) ocenę doświadczenia najmocniej kształtuje najsilniejszy moment i finał.', stems: ['konc', 'kres', 'end', 'finał', 'final'], answer: 'końca (peak-end rule)' },
   ],
   heuristics: [
     { text: 'Jakob ___ sformułował 10 heurystyk użyteczności (wersja z 1994 r.).', accept: ['nielsen'], answer: 'Nielsen' },

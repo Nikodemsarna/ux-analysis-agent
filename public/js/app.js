@@ -1,6 +1,6 @@
 import {
   TOPICS, MODES, buildSession, grade, solution, gradeLabel, normalize,
-  HEURISTICS, JOURNEY_STAGES, EMPATHY_QUADRANTS,
+  HEURISTICS, JOURNEY_STAGES, EMPATHY_QUADRANTS, DCJ_THEORY,
 } from './engine.js';
 
 const app = document.getElementById('app');
@@ -109,7 +109,7 @@ function renderStart() {
 
   screen(
     h('h1', {}, 'Zeszyt ćwiczeń UX'),
-    h('p', { class: 'lead' }, 'Losowe zadania z mapy empatii, customer journey i heurystyk Nielsena. Przeciągaj, uzupełniaj i wyjaśniaj — każde zadanie dostaje ocenę i informację zwrotną.'),
+    h('p', { class: 'lead' }, 'Losowe zadania z mapy empatii, Digital Customer Journey i heurystyk Nielsena. Przeciągaj, uzupełniaj i wyjaśniaj — każde zadanie dostaje ocenę i informację zwrotną.'),
     h('section', { class: 'card setup-grid' },
       toggleGroup('Tematy', TOPICS, s.topics, toggle('topics')),
       toggleGroup('Rodzaje zadań', MODES, s.modes, toggle('modes')),
@@ -138,11 +138,13 @@ function renderStart() {
 
 function cheatsheet() {
   return h('details', { class: 'card cheatsheet' },
-    h('summary', {}, 'Ściąga: pojęcia i 10 heurystyk Nielsena'),
+    h('summary', {}, 'Ściąga: pojęcia, teoria Digital Customer Journey i 10 heurystyk Nielsena'),
     h('h3', {}, 'Mapa empatii'),
     h('ul', {}, EMPATHY_QUADRANTS.map((q) => h('li', {}, h('strong', {}, q.label), ` — ${q.hint}`))),
-    h('h3', {}, 'Etapy customer journey'),
-    h('ol', {}, JOURNEY_STAGES.map((st) => h('li', {}, h('strong', {}, st.label), ` — ${st.hint}`))),
+    h('h3', {}, 'Etapy Digital Customer Journey'),
+    h('ol', {}, JOURNEY_STAGES.map((st) => h('li', {}, h('strong', {}, st.label), ` — ${st.hint}`, h('div', { class: 'muted small' }, st.theory)))),
+    h('h3', {}, 'Teoria customer journey'),
+    h('ul', { class: 'theory-list' }, DCJ_THEORY.map((t) => h('li', {}, h('strong', {}, t.name), ` — ${t.text}`, h('div', { class: 'source' }, t.source)))),
     h('h3', {}, 'Heurystyki Nielsena'),
     h('ol', {}, HEURISTICS.map((x) => h('li', {}, h('strong', {}, x.name), ` — ${x.desc}`))),
   );
@@ -201,6 +203,14 @@ function renderContext(blocks) {
   }));
 }
 
+function theoryBox(refs, open = false) {
+  if (!refs?.length) return null;
+  return h('details', { class: 'theory', open },
+    h('summary', {}, open ? 'Podstawa teoretyczna — sprawdź, skąd biorą się poprawne odpowiedzi' : 'Podstawa teoretyczna'),
+    refs.map((t) => h('div', { class: 'theory-item' },
+      h('strong', {}, t.name), h('p', {}, t.text), h('div', { class: 'source' }, t.source))));
+}
+
 function renderTask() {
   const task = state.tasks[state.index];
   state.checked = false;
@@ -228,7 +238,9 @@ function renderTask() {
     state.checked = true;
     state.results[state.index] = result.score;
     body.showResult(result);
-    banner.replaceWith(resultBanner(result));
+    const resultEl = resultBanner(result);
+    banner.replaceWith(resultEl);
+    if (task.theoryAfterCheck) resultEl.after(theoryBox(task.theory, true) ?? '');
     checkBtn.hidden = true;
     rerollBtn.hidden = true;
     nextBtn.hidden = false;
@@ -244,6 +256,7 @@ function renderTask() {
         h('span', { class: 'tag tag-mode' }, MODES[task.mode])),
       h('h2', {}, task.title),
       h('p', { class: 'instructions' }, task.instructions),
+      task.theoryAfterCheck ? null : theoryBox(task.theory),
       renderContext(task.context),
       body.el,
       banner,

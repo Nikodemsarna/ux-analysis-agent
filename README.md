@@ -3,7 +3,7 @@
 Przeglądarkowy zeszyt ćwiczeń dla studentów uczących się UX. Aplikacja losuje zadania z trzech obszarów:
 
 - **Mapa empatii**: przyporządkowanie notatek z badań do ćwiartek (także wersja rozszerzona z bólami i zyskami), rozpoznawanie ćwiartek, przejście od mapy do pytania „Jak moglibyśmy…?”.
-- **User journey**: układanie kroków ścieżki w kolejności, przypisywanie działań do etapów, warstwy mapy podróży (działanie, punkt styku, emocja, pain point, szansa), znajdowanie pain pointów i proponowanie usprawnień.
+- **Digital Customer Journey**: układanie kroków ścieżki w kolejności, przypisywanie działań do etapów, warstwy mapy customer journey (działanie, punkt styku, emocja, pain point, szansa), typy punktów styku według Lemon i Verhoef, dopasowywanie pojęć z teorii (5A, ZMOT, pętla lojalności, reguła szczytu i końca, service blueprint), znajdowanie pain pointów i proponowanie usprawnień. Zadania mają ramkę „Podstawa teoretyczna” ze źródłami, a ściąga na stronie startowej zawiera przegląd teorii.
 - **Heurystyki Nielsena**: dopasowanie problemów do heurystyk, diagnoza naruszonej heurystyki, nazwy heurystyk, rekomendacje poprawek.
 
 Rodzaje zadań:
@@ -39,7 +39,7 @@ npm test         # testy silnika zadań
 server.js            serwer statyczny bez zależności
 public/index.html    strona aplikacji
 public/styles.css    style
-public/js/data.js    bank treści: persony, ścieżki, scenariusze, pytania
+public/js/data.js    bank treści: persony, ścieżki DCJ, teoria, scenariusze, pytania
 public/js/engine.js  losowanie zadań i ocenianie
 public/js/app.js     interfejs
 test/                testy (node --test)
