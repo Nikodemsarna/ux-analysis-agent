@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zeszyt ćwiczeń UX</title>
+  <meta name="description" content="Losowe ćwiczenia z mapy empatii, user journey i heurystyk Nielsena z automatyczną oceną.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234f46e5'/><path d='M9 9h14M9 15h14M9 21h9' stroke='white' stroke-width='3' stroke-linecap='round'/></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" id="home-link">
+      <span class="brand-mark" aria-hidden="true"></span>
+      Zeszyt ćwiczeń UX
+    </a>
+    <div class="progress" id="progress" hidden>
+      <span id="progress-text"></span>
+      <div class="progress-bar"><div id="progress-fill"></div></div>
+    </div>
+  </header>
+
+  <main id="app" class="container" aria-live="polite"></main>
+
+  <footer class="footer">
+    Odpowiedzi opisowe oceniane są automatycznie na podstawie kluczowych pojęć — traktuj wynik jako wskazówkę i porównaj z odpowiedzią wzorcową.
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
