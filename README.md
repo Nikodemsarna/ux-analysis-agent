@@ -4,7 +4,7 @@ Przeglądarkowy zeszyt ćwiczeń dla studentów uczących się UX. Aplikacja los
 
 - **Mapa empatii**: przyporządkowanie notatek z badań do ćwiartek (także wersja rozszerzona z bólami i zyskami), rozpoznawanie ćwiartek, przejście od mapy do pytania „Jak moglibyśmy…?”.
 - **Digital Customer Journey**: układanie kroków ścieżki w kolejności, przypisywanie działań do etapów, warstwy mapy customer journey (działanie, punkt styku, emocja, pain point, szansa), typy punktów styku według Lemon i Verhoef, dopasowywanie pojęć z teorii (AIDA, 5A, ZMOT, pętla lojalności, ROPO, omnichannel, reguła szczytu i końca, service blueprint), znajdowanie pain pointów i proponowanie usprawnień. Zadania mają ramkę „Podstawa teoretyczna” ze źródłami, a ściąga na stronie startowej opisuje każdy model w 2–3 zdaniach.
-- **Heurystyki Nielsena**: dopasowanie problemów do heurystyk, diagnoza naruszonej heurystyki, nazwy heurystyk, rekomendacje poprawek.
+- **Heurystyki Nielsena**: dopasowanie problemów do heurystyk, diagnoza naruszonej heurystyki, nazwy heurystyk, rekomendacje poprawek. Po sprawdzeniu zadania pokazują opisy heurystyk i teorię oceny heurystycznej ze źródłami (Nielsen i Molich 1990, Nielsen 1994, Nielsen i Landauer 1993, NN/g).
 
 Rodzaje zadań:
 

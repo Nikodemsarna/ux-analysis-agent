@@ -409,16 +409,26 @@ export const JOURNEY_MAP_ITEMS = {
 };
 
 export const HEURISTICS = [
-  { n: 1, name: 'Widoczność stanu systemu', desc: 'System informuje użytkownika, co się dzieje, przez odpowiednią informację zwrotną w rozsądnym czasie.', nameKeys: [['widocz'], ['stan', 'status']] },
-  { n: 2, name: 'Zgodność systemu ze światem rzeczywistym', desc: 'Język, pojęcia i konwencje są znane użytkownikowi, a nie wewnętrzne dla systemu.', nameKeys: [['zgodn', 'dopasow', 'odzwierc'], ['swiat', 'rzeczywist', 'realn']] },
-  { n: 3, name: 'Kontrola i swoboda użytkownika', desc: 'Użytkownik ma „wyjście awaryjne”: cofnij, ponów, anuluj, zamknij.', nameKeys: [['kontrol'], ['swobod', 'wolnos']] },
-  { n: 4, name: 'Spójność i standardy', desc: 'Te same rzeczy wyglądają i działają tak samo; interfejs trzyma się konwencji platformy.', nameKeys: [['spojn', 'konsekw'], ['standard']] },
-  { n: 5, name: 'Zapobieganie błędom', desc: 'Lepiej nie dopuścić do błędu niż dobrze go komunikować: ograniczenia, potwierdzenia, dobre domyślne wartości.', nameKeys: [['zapobieg', 'prewenc', 'unik'], ['blad', 'bled']] },
-  { n: 6, name: 'Rozpoznawanie zamiast przypominania', desc: 'Opcje i informacje są widoczne, użytkownik nie musi ich pamiętać między ekranami.', nameKeys: [['rozpozn'], ['przypom', 'pamiet']] },
-  { n: 7, name: 'Elastyczność i efektywność użycia', desc: 'Skróty i przyspieszenia dla zaawansowanych, personalizacja częstych czynności.', nameKeys: [['elastycz'], ['efektyw', 'wydajn']] },
-  { n: 8, name: 'Estetyka i minimalizm', desc: 'Interfejs zawiera tylko to, co istotne; każdy zbędny element konkuruje o uwagę.', nameKeys: [['estety'], ['minimal']] },
-  { n: 9, name: 'Pomoc w rozpoznawaniu, diagnozowaniu i naprawianiu błędów', desc: 'Komunikaty błędów prostym językiem wskazują problem i proponują rozwiązanie.', nameKeys: [['blad', 'bled'], ['rozpozn', 'diagno', 'napraw', 'wychodz']] },
-  { n: 10, name: 'Pomoc i dokumentacja', desc: 'Łatwa do przeszukania, kontekstowa pomoc skupiona na zadaniach użytkownika.', nameKeys: [['pomoc'], ['dokumentac']] },
+  { n: 1, name: 'Widoczność stanu systemu', desc: 'System powinien zawsze informować użytkownika, co się dzieje, przez odpowiednią informację zwrotną w rozsądnym czasie. Przykładem są wskaźnik ładowania, pasek postępu czy oznaczenie bieżącego kroku w procesie.', nameKeys: [['widocz'], ['stan', 'status']] },
+  { n: 2, name: 'Zgodność systemu ze światem rzeczywistym', desc: 'System powinien mówić językiem użytkownika — słowami, pojęciami i konwencjami, które zna, a nie wewnętrznym żargonem. Informacje powinny pojawiać się w naturalnej i logicznej kolejności, zgodnej z tym, jak działa świat.', nameKeys: [['zgodn', 'dopasow', 'odzwierc'], ['swiat', 'rzeczywist', 'realn']] },
+  { n: 3, name: 'Kontrola i swoboda użytkownika', desc: 'Użytkownicy często wybierają funkcje przez pomyłkę i potrzebują wyraźnego „wyjścia awaryjnego”, by bez długiej procedury opuścić niechciany stan. Interfejs powinien wspierać cofanie, ponawianie, anulowanie i zamykanie.', nameKeys: [['kontrol'], ['swobod', 'wolnos']] },
+  { n: 4, name: 'Spójność i standardy', desc: 'Użytkownik nie powinien zastanawiać się, czy różne słowa, sytuacje lub działania oznaczają to samo. Interfejs powinien być spójny wewnętrznie i trzymać się konwencji platformy oraz branży, które użytkownicy znają z innych produktów.', nameKeys: [['spojn', 'konsekw'], ['standard']] },
+  { n: 5, name: 'Zapobieganie błędom', desc: 'Lepiej zapobiec błędowi, niż potem dobrze go komunikować. Pomagają w tym ograniczenia, dobre wartości domyślne, walidacja w trakcie wpisywania i potwierdzenia przed nieodwracalnymi akcjami.', nameKeys: [['zapobieg', 'prewenc', 'unik'], ['blad', 'bled']] },
+  { n: 6, name: 'Rozpoznawanie zamiast przypominania', desc: 'Należy ograniczać obciążenie pamięci użytkownika, pokazując elementy, działania i opcje zamiast wymagać ich zapamiętania. Informacje potrzebne do wykonania zadania powinny być widoczne lub łatwo dostępne w chwili, gdy są potrzebne.', nameKeys: [['rozpozn'], ['przypom', 'pamiet']] },
+  { n: 7, name: 'Elastyczność i efektywność użycia', desc: 'Przyspieszenia niewidoczne dla początkujących, takie jak skróty klawiszowe, szablony czy gesty, mogą znacznie usprawnić pracę zaawansowanych użytkowników. Interfejs powinien obsługiwać obie grupy i pozwalać personalizować częste czynności.', nameKeys: [['elastycz'], ['efektyw', 'wydajn']] },
+  { n: 8, name: 'Estetyka i minimalizm', desc: 'Interfejs nie powinien zawierać informacji nieistotnych lub rzadko potrzebnych. Każdy dodatkowy element konkuruje o uwagę z tymi ważnymi i obniża ich widoczność.', nameKeys: [['estety'], ['minimal']] },
+  { n: 9, name: 'Pomoc w rozpoznawaniu, diagnozowaniu i naprawianiu błędów', desc: 'Komunikaty błędów powinny być napisane prostym językiem, bez kodów, precyzyjnie wskazywać problem i konstruktywnie proponować rozwiązanie. Powinny też być wyraźnie wyróżnione, żeby użytkownik od razu je zauważył.', nameKeys: [['blad', 'bled'], ['rozpozn', 'diagno', 'napraw', 'wychodz']] },
+  { n: 10, name: 'Pomoc i dokumentacja', desc: 'Najlepiej, gdy system jest zrozumiały bez dokumentacji, ale czasem pomoc okazuje się potrzebna. Powinna być łatwa do przeszukania, skupiona na zadaniach użytkownika i podawać konkretne kroki, najlepiej w miejscu, w którym jest potrzebna.', nameKeys: [['pomoc'], ['dokumentac']] },
+];
+
+export const HEURISTICS_SOURCE = 'Nielsen, J. (1994). Enhancing the Explanatory Power of Usability Heuristics. Proceedings of the ACM CHI ’94 Conference, 152–158; opisy za: Nielsen, J. (2020). 10 Usability Heuristics for User Interface Design. Nielsen Norman Group.';
+
+// Teoria oceny heurystycznej — ściąga i ramki „Podstawa teoretyczna”.
+export const HEURISTICS_THEORY = [
+  { id: 'origin', name: 'Skąd się wzięły heurystyki Nielsena', text: 'Pierwszą listę heurystyk użyteczności Jakob Nielsen i Rolf Molich zaproponowali w 1990 roku jako szybką i tanią metodę oceny interfejsu. W 1994 roku Nielsen przeanalizował 249 problemów użyteczności i na tej podstawie sformułował obowiązującą do dziś listę 10 heurystyk. Nazywa się je heurystykami, bo są ogólnymi regułami kciuka, a nie szczegółowymi wytycznymi projektowymi.', source: 'Nielsen, J., Molich, R. (1990). Heuristic Evaluation of User Interfaces. Proceedings of the ACM CHI ’90 Conference, 249–256; Nielsen, J. (1994). Enhancing the Explanatory Power of Usability Heuristics. Proceedings of the ACM CHI ’94 Conference, 152–158.' },
+  { id: 'method', name: 'Ocena heurystyczna jako metoda', text: 'Ocena heurystyczna to metoda inspekcji, w której kilku ewaluatorów niezależnie przegląda interfejs i porównuje go z listą heurystyk. Wyniki łączy się dopiero po zakończeniu indywidualnych przeglądów, żeby ewaluatorzy nie sugerowali się nawzajem. Metoda nie zastępuje testów z użytkownikami, ale pozwala tanio wychwycić wiele problemów na wczesnym etapie projektu.', source: 'Nielsen, J. (1994). Heuristic Evaluation. W: J. Nielsen, R. L. Mack (red.), Usability Inspection Methods. John Wiley & Sons.' },
+  { id: 'evaluators', name: 'Liczba ewaluatorów', text: 'Pojedynczy ewaluator znajduje średnio tylko około 35% problemów użyteczności. Nielsen zaleca 3–5 niezależnych ewaluatorów, którzy razem wykrywają zwykle około 75% problemów. Każda kolejna osoba wnosi coraz mniej nowych znalezisk, więc większy zespół rzadko się opłaca.', source: 'Nielsen, J., Landauer, T. K. (1993). A Mathematical Model of the Finding of Usability Problems. Proceedings of ACM INTERCHI ’93, 206–213; Nielsen, J. (1994). How to Conduct a Heuristic Evaluation. Nielsen Norman Group.' },
+  { id: 'severity', name: 'Skala ważności problemów (0–4)', text: 'Każdemu znalezionemu problemowi przypisuje się stopień ważności: 0 — to nie jest problem, 1 — kosmetyczny, 2 — drobny, 3 — poważny, 4 — katastrofa użyteczności. Ocena uwzględnia częstość występowania problemu, jego wpływ na użytkownika i to, czy powtarza się mimo nabytego doświadczenia. Skala pomaga ustalić, które poprawki wdrożyć najpierw.', source: 'Nielsen, J. (1994). Severity Ratings for Usability Problems. Nielsen Norman Group.' },
 ];
 
 // Każdy scenariusz narusza jedną heurystykę (h). `fix` — grupy pojęć oczekiwanych w propozycji poprawki.
@@ -556,13 +566,13 @@ export const THEORY = {
     { text: 'Według reguły szczytu i ___ (Kahneman) ocenę doświadczenia najmocniej kształtuje najsilniejszy moment i finał.', stems: ['konc', 'kres', 'end', 'finał', 'final'], answer: 'końca (peak-end rule)', theory: 'peakend' },
   ],
   heuristics: [
-    { text: 'Jakob ___ sformułował 10 heurystyk użyteczności (wersja z 1994 r.).', accept: ['nielsen'], answer: 'Nielsen' },
-    { text: 'Ocenę heurystyczną przeprowadzają ___, a nie realni użytkownicy.', stems: ['ekspert', 'specjali', 'projektan', 'badacz', 'oceniajac', 'ewaluator'], answer: 'eksperci (ewaluatorzy)' },
-    { text: 'Nielsen zaleca, by ocenę heurystyczną przeprowadzało od 3 do ___ niezależnych ewaluatorów.', accept: ['5', 'piec', 'pieciu'], answer: '5' },
-    { text: 'Każdemu znalezionemu problemowi przypisuje się stopień ___ w skali od 0 do 4.', stems: ['wag', 'powag', 'istotn', 'krytycz', 'dotkliw', 'severity'], answer: 'ważności (powagi)' },
-    { text: 'Przycisk „Cofnij” realizuje heurystykę „Kontrola i ___ użytkownika”.', stems: ['swobod', 'wolnos'], answer: 'swoboda' },
-    { text: 'Pasek postępu przy przesyłaniu pliku realizuje heurystykę „Widoczność ___ systemu”.', stems: ['stan', 'status'], answer: 'stanu' },
-    { text: 'Autouzupełnianie i lista ostatnio oglądanych wspierają heurystykę „___ zamiast przypominania”.', stems: ['rozpozn'], answer: 'Rozpoznawanie' },
-    { text: 'Dialog „Czy na pewno chcesz usunąć?” to przykład realizacji heurystyki „___ błędom”.', stems: ['zapobieg'], answer: 'Zapobieganie' },
+    { text: 'Jakob ___ sformułował 10 heurystyk użyteczności (wersja z 1994 r.).', accept: ['nielsen'], answer: 'Nielsen', theory: 'origin' },
+    { text: 'Ocenę heurystyczną przeprowadzają ___, a nie realni użytkownicy.', stems: ['ekspert', 'specjali', 'projektan', 'badacz', 'oceniajac', 'ewaluator'], answer: 'eksperci (ewaluatorzy)', theory: 'method' },
+    { text: 'Nielsen zaleca, by ocenę heurystyczną przeprowadzało od 3 do ___ niezależnych ewaluatorów.', accept: ['5', 'piec', 'pieciu'], answer: '5', theory: 'evaluators' },
+    { text: 'Każdemu znalezionemu problemowi przypisuje się stopień ___ w skali od 0 do 4.', stems: ['wag', 'powag', 'istotn', 'krytycz', 'dotkliw', 'severity'], answer: 'ważności (powagi)', theory: 'severity' },
+    { text: 'Przycisk „Cofnij” realizuje heurystykę „Kontrola i ___ użytkownika”.', stems: ['swobod', 'wolnos'], answer: 'swoboda', theory: 'h3' },
+    { text: 'Pasek postępu przy przesyłaniu pliku realizuje heurystykę „Widoczność ___ systemu”.', stems: ['stan', 'status'], answer: 'stanu', theory: 'h1' },
+    { text: 'Autouzupełnianie i lista ostatnio oglądanych wspierają heurystykę „___ zamiast przypominania”.', stems: ['rozpozn'], answer: 'Rozpoznawanie', theory: 'h6' },
+    { text: 'Dialog „Czy na pewno chcesz usunąć?” to przykład realizacji heurystyki „___ błędom”.', stems: ['zapobieg'], answer: 'Zapobieganie', theory: 'h5' },
   ],
 };

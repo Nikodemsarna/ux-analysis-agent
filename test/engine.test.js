@@ -57,8 +57,8 @@ test('ocena opisowa: częściowe punkty i minimalna długość', () => {
   assert.ok(sel.score > 0 && sel.score < 1);
 });
 
-test('zadania Digital Customer Journey mają odwołania do teorii ze źródłami', () => {
-  for (const key of GENERATOR_KEYS.filter((k) => k.startsWith('journey-'))) {
+test('zadania DCJ i heurystyk mają odwołania do teorii ze źródłami', () => {
+  for (const key of GENERATOR_KEYS.filter((k) => k.startsWith('journey-') || k.startsWith('heuristics-'))) {
     const task = makeTask(key);
     assert.ok(task.theory?.length, key);
     for (const t of task.theory) assert.ok(t && t.name && t.text && t.source, key);
@@ -74,4 +74,16 @@ test('każdy model teoretyczny DCJ jest opisany w 2–3 zdaniach', async () => {
   }
   for (const c of DCJ_CONCEPTS) assert.ok(ids.has(c.theory), c.label);
   for (const q of THEORY.journey) assert.ok(ids.has(q.theory), q.text);
+});
+
+test('heurystyki mają źródło, opisy w 2–3 zdaniach i powiązane pytania', async () => {
+  const { HEURISTICS, HEURISTICS_THEORY, HEURISTICS_SOURCE, THEORY } = await import('../public/js/data.js');
+  const count = (t) => t.split(/(?<=[.!?])\s+(?=[A-ZĄĆĘŁŃÓŚŹŻ„])/).filter(Boolean).length;
+  assert.match(HEURISTICS_SOURCE, /Nielsen, J\. \(1994\)/);
+  for (const t of [...HEURISTICS.map((h) => ({ id: h.n, text: h.desc })), ...HEURISTICS_THEORY]) {
+    assert.ok(count(t.text) >= 2 && count(t.text) <= 3, `${t.id}: ${count(t.text)} zdań`);
+  }
+  for (const t of HEURISTICS_THEORY) assert.ok(t.source, t.id);
+  const ids = new Set([...HEURISTICS_THEORY.map((t) => t.id), ...HEURISTICS.map((h) => `h${h.n}`)]);
+  for (const q of THEORY.heuristics) assert.ok(ids.has(q.theory), q.text);
 });

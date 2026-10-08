@@ -2,6 +2,7 @@
 import {
   EMPATHY_QUADRANTS, PERSONAS, JOURNEY_STAGES, JOURNEYS, JOURNEY_MAP_LAYERS,
   JOURNEY_MAP_ITEMS, HEURISTICS, HEURISTIC_SCENARIOS, THEORY, DCJ_THEORY, DCJ_CONCEPTS,
+  HEURISTICS_THEORY, HEURISTICS_SOURCE,
   TOUCHPOINT_TYPES, TOUCHPOINT_ITEMS,
 } from './data.js';
 
@@ -177,7 +178,13 @@ export function solution(task) {
 
 // ---------- generatory ----------
 
-const theoryRefs = (...ids) => ids.map((id) => DCJ_THEORY.find((t) => t.id === id));
+const THEORY_INDEX = [
+  ...DCJ_THEORY,
+  ...HEURISTICS_THEORY,
+  ...HEURISTICS.map((h) => ({ id: `h${h.n}`, name: `Heurystyka ${h.n}: ${h.name}`, text: h.desc, source: HEURISTICS_SOURCE })),
+];
+const theoryRefs = (...ids) => ids.map((id) => THEORY_INDEX.find((t) => t.id === id));
+const heuristicRefs = (ns) => theoryRefs(...[...new Set(ns)].sort((a, b) => a - b).map((n) => `h${n}`));
 
 function dndTask({ topic, title, instructions, context, zones, items, layout, theory, theoryAfterCheck }) {
   return {
@@ -378,6 +385,8 @@ const GENERATORS = [
         context: [],
         zones: hs.sort((a, b) => a.n - b.n).map((h) => ({ id: `h${h.n}`, label: heuristicLabel(h), capacity: 1 })),
         items, layout: 'list',
+        theory: heuristicRefs(hs.map((h) => h.n)),
+        theoryAfterCheck: true,
       });
     },
   },
@@ -393,6 +402,8 @@ const GENERATORS = [
         instructions: 'Dla każdego problemu wybierz z listy heurystykę Nielsena, którą narusza.',
         context: [],
         fields: scenarios.map((s) => ({ kind: 'select', prompt: s.text, options: heuristicOptions(), correct: String(s.h) })),
+        theory: heuristicRefs(scenarios.map((s) => s.h)),
+        theoryAfterCheck: true,
       });
     },
   },
@@ -406,6 +417,8 @@ const GENERATORS = [
         instructions: 'Wpisz nazwy heurystyk Nielsena o podanych numerach. Liczy się sens — drobne różnice w sformułowaniu są akceptowane.',
         context: [],
         fields: hs.map((h) => ({ kind: 'text', prompt: `Heurystyka nr ${h.n}: ___`, nameKeys: h.nameKeys, answer: h.name })),
+        theory: [...theoryRefs('origin'), ...heuristicRefs(hs.map((h) => h.n))],
+        theoryAfterCheck: true,
       });
     },
   },
@@ -422,6 +435,8 @@ const GENERATORS = [
           { kind: 'select', prompt: 'Naruszona heurystyka:', options: heuristicOptions(), correct: String(sc.h), weight: 1 },
           { kind: 'textarea', prompt: 'Rekomendacja — co konkretnie zmienić i dlaczego:', keywords: sc.fix, need: sc.need ?? 2, model: sc.model, weight: 2 },
         ],
+        theory: [...heuristicRefs([sc.h]), ...theoryRefs('severity')],
+        theoryAfterCheck: true,
       });
     },
   },
@@ -435,7 +450,7 @@ const GENERATORS = [
         instructions: 'Wpisz brakujące słowo lub wyrażenie w każdej luce.',
         context: [],
         fields: qs.map((q) => ({ kind: 'text', prompt: q.text, accept: q.accept ?? [], stems: q.stems ?? [], answer: q.answer })),
-        theory: topic === 'journey' ? theoryRefs(...new Set(qs.map((q) => q.theory).filter(Boolean))) : undefined,
+        theory: topic === 'empathy' ? undefined : theoryRefs(...new Set(qs.map((q) => q.theory))),
         theoryAfterCheck: true,
       });
     },
@@ -477,4 +492,4 @@ export function gradeLabel(percent) {
   return { mark: '2', text: 'niedostateczny' };
 }
 
-export { HEURISTICS, JOURNEY_STAGES, EMPATHY_QUADRANTS, DCJ_THEORY };
+export { HEURISTICS, JOURNEY_STAGES, EMPATHY_QUADRANTS, DCJ_THEORY, HEURISTICS_THEORY, HEURISTICS_SOURCE };

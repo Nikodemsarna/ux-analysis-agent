@@ -1,6 +1,6 @@
 import {
   TOPICS, MODES, buildSession, grade, solution, gradeLabel, normalize,
-  HEURISTICS, JOURNEY_STAGES, EMPATHY_QUADRANTS, DCJ_THEORY,
+  HEURISTICS, JOURNEY_STAGES, EMPATHY_QUADRANTS, DCJ_THEORY, HEURISTICS_THEORY, HEURISTICS_SOURCE,
 } from './engine.js';
 
 const app = document.getElementById('app');
@@ -147,6 +147,9 @@ function cheatsheet() {
     h('ul', { class: 'theory-list' }, DCJ_THEORY.map((t) => h('li', {}, h('strong', {}, t.name), ` — ${t.text}`, h('div', { class: 'source' }, t.source)))),
     h('h3', {}, 'Heurystyki Nielsena'),
     h('ol', {}, HEURISTICS.map((x) => h('li', {}, h('strong', {}, x.name), ` — ${x.desc}`))),
+    h('div', { class: 'source' }, `Źródło: ${HEURISTICS_SOURCE}`),
+    h('h3', {}, 'Ocena heurystyczna — teoria'),
+    h('ul', { class: 'theory-list' }, HEURISTICS_THEORY.map((t) => h('li', {}, h('strong', {}, t.name), ` — ${t.text}`, h('div', { class: 'source' }, t.source)))),
   );
 }
 
