@@ -64,3 +64,14 @@ test('zadania Digital Customer Journey mają odwołania do teorii ze źródłami
     for (const t of task.theory) assert.ok(t && t.name && t.text && t.source, key);
   }
 });
+
+test('każdy model teoretyczny DCJ jest opisany w 2–3 zdaniach', async () => {
+  const { DCJ_THEORY, DCJ_CONCEPTS, THEORY } = await import('../public/js/data.js');
+  const ids = new Set(DCJ_THEORY.map((t) => t.id));
+  for (const t of DCJ_THEORY) {
+    const sentences = t.text.split(/(?<=[.!?])\s+(?=[A-ZĄĆĘŁŃÓŚŹŻ„])/).filter(Boolean);
+    assert.ok(sentences.length >= 2 && sentences.length <= 3, `${t.id}: ${sentences.length} zdań`);
+  }
+  for (const c of DCJ_CONCEPTS) assert.ok(ids.has(c.theory), c.label);
+  for (const q of THEORY.journey) assert.ok(ids.has(q.theory), q.text);
+});

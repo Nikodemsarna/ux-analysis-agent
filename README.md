@@ -3,7 +3,7 @@
 Przeglądarkowy zeszyt ćwiczeń dla studentów uczących się UX. Aplikacja losuje zadania z trzech obszarów:
 
 - **Mapa empatii**: przyporządkowanie notatek z badań do ćwiartek (także wersja rozszerzona z bólami i zyskami), rozpoznawanie ćwiartek, przejście od mapy do pytania „Jak moglibyśmy…?”.
-- **Digital Customer Journey**: układanie kroków ścieżki w kolejności, przypisywanie działań do etapów, warstwy mapy customer journey (działanie, punkt styku, emocja, pain point, szansa), typy punktów styku według Lemon i Verhoef, dopasowywanie pojęć z teorii (5A, ZMOT, pętla lojalności, reguła szczytu i końca, service blueprint), znajdowanie pain pointów i proponowanie usprawnień. Zadania mają ramkę „Podstawa teoretyczna” ze źródłami, a ściąga na stronie startowej zawiera przegląd teorii.
+- **Digital Customer Journey**: układanie kroków ścieżki w kolejności, przypisywanie działań do etapów, warstwy mapy customer journey (działanie, punkt styku, emocja, pain point, szansa), typy punktów styku według Lemon i Verhoef, dopasowywanie pojęć z teorii (AIDA, 5A, ZMOT, pętla lojalności, ROPO, omnichannel, reguła szczytu i końca, service blueprint), znajdowanie pain pointów i proponowanie usprawnień. Zadania mają ramkę „Podstawa teoretyczna” ze źródłami, a ściąga na stronie startowej opisuje każdy model w 2–3 zdaniach.
 - **Heurystyki Nielsena**: dopasowanie problemów do heurystyk, diagnoza naruszonej heurystyki, nazwy heurystyk, rekomendacje poprawek.
 
 Rodzaje zadań:

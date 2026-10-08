@@ -341,7 +341,7 @@ const GENERATORS = [
         instructions: 'Przyporządkuj każdy punkt styku do kategorii według Lemon i Verhoef (2016): kto go kontroluje?',
         context: [{ kind: 'scenario', title: 'Zakup sprzętu elektronicznego online', text: 'Punkty styku zebrane podczas analizy ścieżki klientów sklepu internetowego z elektroniką.' }],
         zones: TOUCHPOINT_TYPES, items, layout: 'columns',
-        theory: theoryRefs('touchpoints', 'digital'),
+        theory: theoryRefs('touchpoints', 'digital', 'omnichannel'),
         theoryAfterCheck: true,
       });
     },
@@ -358,7 +358,7 @@ const GENERATORS = [
         zones: concepts.map((c, i) => ({ id: `c${i}`, label: c.label, capacity: 1 })),
         items: concepts.map((c, i) => ({ text: c.def, target: `c${i}` })),
         layout: 'list',
-        theory: theoryRefs('definition', '5a', 'mckinsey', 'zmot'),
+        theory: theoryRefs(...concepts.map((c) => c.theory)),
         theoryAfterCheck: true,
       });
     },
@@ -435,7 +435,7 @@ const GENERATORS = [
         instructions: 'Wpisz brakujące słowo lub wyrażenie w każdej luce.',
         context: [],
         fields: qs.map((q) => ({ kind: 'text', prompt: q.text, accept: q.accept ?? [], stems: q.stems ?? [], answer: q.answer })),
-        theory: topic === 'journey' ? theoryRefs('definition', 'zmot', 'mckinsey') : undefined,
+        theory: topic === 'journey' ? theoryRefs(...new Set(qs.map((q) => q.theory).filter(Boolean))) : undefined,
         theoryAfterCheck: true,
       });
     },
